@@ -1,0 +1,41 @@
+:root {
+	--background: #202124;
+}
+
+body {
+	height: 100vh;
+	margin-left: 5%;
+	margin-right: 5%;
+	display: flex;
+	flex-wrap: wrap;
+	font-family: monospace;
+	background-color: var(--background);
+	color: beige;
+	font-size: 1.2em;
+}
+
+::marker {
+	color: var(--background);
+}
+
+.post-img {
+	align-self: center;
+	max-width: 700px;
+	width: 100%;
+	height: auto;
+}
+
+nav {
+	margin-left: 5%;
+	display: flex;
+	flex-grow: 1;
+	align-items: center;
+	justify-content: space-between;
+}
+
+a {
+	color: cornflowerblue;
+}
+a:visited {
+	color: cornflowerblue;
+}
