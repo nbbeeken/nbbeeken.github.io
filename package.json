@@ -1,19 +1,19 @@
 {
-  "name": "me",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "start": "node scripts/server.js",
-    "sync": "node scripts/content.js",
-    "fmt": "prettier --write scripts/* content/posts/*.html src/*.{js,css,html} *.md"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "^2.2.1"
-  }
+	"name": "me",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.js",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"start": "node scripts/server.js",
+		"sync": "node scripts/content.js",
+		"fmt": "prettier --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"prettier": "^2.7.1"
+	}
 }

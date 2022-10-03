@@ -15,7 +15,7 @@ const MIME_TYPE = new Map([
 	['css', 'text/css'],
 	['map', 'application/json'],
 	['json', 'application/json'],
-	['html', 'text/html'],
+	['html', 'application/xhtml+xml'],
 ])
 
 async function main() {
@@ -26,11 +26,11 @@ async function main() {
 
 		try {
 			if (url.pathname === '/') {
-				response.setHeader('content-type', 'text/html')
-				response.end(await readFile(path.join('public', 'index.html')), 'utf8')
+				response.setHeader('content-type', MIME_TYPE.get('html'))
+				response.end(await readFile('index.html'), 'utf8')
 				continue
 			} else {
-				const fileData = await readFile(path.join('public', url.pathname.slice(1)))
+				const fileData = await readFile(url.pathname.slice(1))
 
 				// Get the extension
 				const fileParts = url.pathname.split('.')
