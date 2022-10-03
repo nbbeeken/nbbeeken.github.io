@@ -1,0 +1,86 @@
+@font-face {
+	font-family: 'SpaceMono Nerd Font';
+	src: url('/fonts/SpaceMonoRegular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'SpaceMono Nerd Font';
+	src: url('/fonts/SpaceMonoItalic.woff2') format('woff2');
+	font-weight: normal;
+	font-style: italic;
+	font-display: swap;
+}
+
+:root {
+	max-width: 100ch;
+	padding: 2em 1em;
+	margin: auto;
+	line-height: 1.75;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+code,
+pre {
+	font-family: 'SpaceMono Nerd Font', monospace;
+}
+
+.bio > * {
+	display: inline;
+}
+
+main {
+	max-width: 50rem;
+	padding: 2rem;
+	padding-top: 0;
+	margin: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 1em 0 1em;
+}
+
+p,
+ul,
+ol {
+	margin-bottom: 2em;
+	color: #1d1d1d;
+	font-family: sans-serif;
+	list-style-type: none;
+}
+
+.projects > * > h1,
+h2,
+h3 {
+	font-family: 'SpaceMono Nerd Font', monospace;
+}
+
+a {
+	color: steelblue;
+	text-decoration: none;
+	font-style: italic;
+}
+
+.post-preview {
+	/* Add shadows to create the "card" effect */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	padding: 2px 16px;
+}
+
+.post-preview > * > h1,
+h2,
+h3,
+h4 {
+	font-family: 'SpaceMono Nerd Font', monospace;
+}
+
+.post-preview:hover {
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
