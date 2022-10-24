@@ -21,6 +21,10 @@
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+img {
+	max-width: 78ch;
+}
+
 code,
 pre {
 	font-family: 'SpaceMono Nerd Font', monospace;
@@ -72,6 +76,7 @@ a {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
 	padding: 2px 16px;
+	margin-bottom: 15px;
 }
 
 .post-preview > * > h1,
