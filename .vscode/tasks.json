@@ -1,0 +1,40 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "nu: check html",
+			"type": "shell",
+			"command": "node",
+			"args": ["${workspaceRoot}/scripts/lint_html.mjs"],
+			"problemMatcher": {
+				"source": "nu",
+				"owner": "nu",
+				"fileLocation": "absolute",
+				"pattern": [
+					{
+						"regexp": "^\"file:(.+)\":(\\d+)\\.(\\d+)-(\\d+)\\.(\\d+): (\\w+): (.+)$",
+						"file": 1,
+						"line": 2,
+						"column": 3,
+						"endLine": 4,
+						"endColumn": 5,
+						"severity": 6,
+						"message": 7
+					}
+				]
+			},
+			"isBackground": false,
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"clear": true,
+				"showReuseMessage": false,
+				"revealProblems": "always"
+			}
+		}
+	]
+}
