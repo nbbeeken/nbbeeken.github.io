@@ -15,7 +15,7 @@ const MIME_TYPE = new Map([
 	['css', 'text/css'],
 	['map', 'application/json'],
 	['json', 'application/json'],
-	['html', 'application/xhtml+xml'],
+	['html', 'text/html'],
 	['woff2', 'font/woff2'],
 ])
 
