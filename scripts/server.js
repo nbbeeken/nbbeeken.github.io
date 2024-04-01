@@ -10,6 +10,7 @@ server.listen(8080, 'localhost', 128, () => console.log('Listening on http://loc
 const DEFAULT_MIME = 'text/plain'
 
 const MIME_TYPE = new Map([
+	['mjs', 'application/javascript'],
 	['js', 'application/javascript'],
 	['wasm', 'application/wasm'],
 	['css', 'text/css'],
@@ -23,6 +24,11 @@ async function main() {
 	for await (const [request, response] of on(server, 'request')) {
 		const url = new URL(request.url, `http://${request.headers.host}`)
 
+		if (url.pathname === '/json/version' || url.pathname === '/json/list') {
+			response.statusCode = 404
+			response.end()
+			continue;
+		}
 		console.log(request.method, url.pathname)
 
 		try {

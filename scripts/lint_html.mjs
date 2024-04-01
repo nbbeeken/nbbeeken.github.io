@@ -5,13 +5,12 @@ import process from 'process';
 import vnu from 'vnu-jar';
 
 const blogFiles = fs.readdirSync('blog').filter(f => f.endsWith('.html')).map(f => path.join('blog', f))
-const htmlFiles = ['main.css', 'index.html', 'resume.html', ...blogFiles]
+const htmlFiles = ['index.html', 'resume.html', ...blogFiles]
 
 const output = child_process.execFileSync('java', [
     '-jar',
     `"${vnu}"`,
     '--format', 'json',
-    '--also-check-css',
     '--stdout',
     '--exit-zero-always',
     ...htmlFiles

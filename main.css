@@ -89,3 +89,37 @@ h4 {
 .post-preview:hover {
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
+
+button {
+	padding: 0.35em 1.2em;
+	border: 0.1em solid black;
+	margin: 0 0.3em 0.3em 0;
+	border-radius: 0.12em;
+	transition: all 0.15s;
+	font-size: 1.12rem;
+
+	&:disabled {
+		color: gray;
+		background-color: darkslategray;
+	}
+}
+
+@media all and (max-width:30em) {
+	button {
+		margin: 0.4em auto;
+		padding: 0.8em;
+	}
+}
+
+.pulse {
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 105, 0, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+  }
+}
