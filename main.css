@@ -104,7 +104,7 @@ button {
 	}
 }
 
-@media all and (max-width:30em) {
+@media all and (max-width: 30em) {
 	button {
 		margin: 0.4em auto;
 		padding: 0.8em;
@@ -112,14 +112,14 @@ button {
 }
 
 .pulse {
-  animation: pulse-animation 2s infinite;
+	animation: pulse-animation 2s infinite;
 }
 
 @keyframes pulse-animation {
-  0% {
-    box-shadow: 0 0 0 0px rgba(0, 105, 0, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
-  }
+	0% {
+		box-shadow: 0 0 0 0px rgba(0, 105, 0, 0.8);
+	}
+	100% {
+		box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+	}
 }

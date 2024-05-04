@@ -8,13 +8,15 @@
 	"scripts": {
 		"start": "node scripts/server.js",
 		"sync": "node scripts/content.js",
-		"fmt": "prettier --write ."
+		"fmt": "prettier --write .",
+		"lint": "node ./scripts/lint_html.mjs"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"prettier": "^3.2.5",
+		"typescript": "^5.4.5",
 		"vnu-jar": "^23.4.11"
 	}
 }

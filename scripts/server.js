@@ -27,7 +27,7 @@ async function main() {
 		if (url.pathname === '/json/version' || url.pathname === '/json/list') {
 			response.statusCode = 404
 			response.end()
-			continue;
+			continue
 		}
 		console.log(request.method, url.pathname)
 
