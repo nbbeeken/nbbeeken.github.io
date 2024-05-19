@@ -21,7 +21,7 @@ const ignore = 'Trailing slash on void elements'.toLowerCase()
 const { messages } = JSON.parse(output)
 
 for (const message of messages) {
-	if (message.message.toLowerCase().includes(ignore)) continue;
+	if (message.message.toLowerCase().includes(ignore)) continue
 
 	process.exitCode = 1
 

@@ -1,5 +1,6 @@
-import { log } from 'js/logger.mjs'
-import { once, promiseWithResolvers } from 'js/utils.mjs'
+import { once, promiseWithResolvers } from '../utils.mjs'
+
+const log = console.log.bind(console);
 
 const scanBtn = document.getElementById('scan')
 const writeBtn = document.getElementById('write')
@@ -39,6 +40,7 @@ class NFC {
 	waitingReaders = []
 	/** @public */
 	errored = null
+	#currentScan
 
 	constructor() {
 		this.controller = new AbortController()
