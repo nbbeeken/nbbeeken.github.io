@@ -7,7 +7,7 @@
 		<link type="image/png" href="../images/favicon.png" rel="shortcut icon" />
 		<link type="image/png" href="../images/favicon.png" rel="apple-touch-icon" />
 		<link type="text/css" href="../main.css" rel="stylesheet" />
-		<script src="./cards.mjs" type="module" async defer></script>
+		<script src="./cards.ts" type="module" async defer></script>
 	</head>
 
 	<body>
@@ -16,9 +16,14 @@
 			<section>
 				<h3>what is a playing card?</h3>
 				<p>Given a blank card, one must discover its inherent value...</p>
-				<button id="scan">Start scan &#128244;</button>
+				<button id="scan">Turn on NFC &#128244;</button>
+
+				<div>
+					<h4>Read a card</h4>
+					<ul id="scans" style="font-family: 'SpaceMono Nerd Font', monospace"></ul>
+				</div>
+
 				<button id="write">Write card</button>
-				<ul id="scans" style="font-family: 'SpaceMono Nerd Font', monospace"></ul>
 			</section>
 		</article>
 	</body>

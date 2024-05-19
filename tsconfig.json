@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"checkJs": true,
+		"strict": true,
 		"target": "ESNext",
 		"module": "ESNext",
 		"lib": ["DOM", "ES2022.Error", "ESNext"]

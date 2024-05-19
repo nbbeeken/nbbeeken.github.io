@@ -5,14 +5,11 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "parcel src/index.html",
-		"build": "parcel build src/index.html",
+		"start": "parcel serve --no-hmr src/index.html",
+		"build": "parcel build --no-content-hash --no-optimize src/index.html",
 		"fmt": "prettier --write .",
 		"lint": "node ./scripts/lint_html.mjs"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"devDependencies": {
 		"parcel": "^2.12.0",
 		"prettier": "^3.2.5",
