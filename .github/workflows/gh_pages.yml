@@ -25,9 +25,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
@@ -35,6 +32,9 @@ jobs:
       - run: npm clean-install
 
       - run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
