@@ -47,13 +47,21 @@ interface Window {
 	NDEFReader: NDEFReader;
 }
 
-type EventHandler<T> = T | { handleEvent: T }
+type EventHandler<T> = T | { handleEvent: T };
 
 declare class NDEFReader extends EventTarget {
 	constructor();
 
-	override addEventListener(type: 'reading', callback: EventHandler<(event: NDEFReadingEvent) => void> | null, options?: boolean | AddEventListenerOptions | undefined): void;
-	override addEventListener(type: 'readingerror', callback: EventHandler<(event: Event) => void> | null, options?: boolean | AddEventListenerOptions | undefined): void;
+	override addEventListener(
+		type: 'reading',
+		callback: EventHandler<(event: NDEFReadingEvent) => void> | null,
+		options?: boolean | AddEventListenerOptions | undefined,
+	): void;
+	override addEventListener(
+		type: 'readingerror',
+		callback: EventHandler<(event: Event) => void> | null,
+		options?: boolean | AddEventListenerOptions | undefined,
+	): void;
 
 	onreading: (this: this, event: NDEFReadingEvent) => any;
 	onreadingerror: (this: this, error: Event) => any;

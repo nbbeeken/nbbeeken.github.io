@@ -1,4 +1,8 @@
-export function promiseWithResolvers<T>(): {resolve: (value: T) => void; reject: (reason?: any) => void; promise: Promise<T>} {
+export function promiseWithResolvers<T>(): {
+	resolve: (value: T) => void;
+	reject: (reason?: any) => void;
+	promise: Promise<T>;
+} {
 	let resolve, reject;
 	const promise = new Promise<T>((res, rej) => {
 		resolve = res;

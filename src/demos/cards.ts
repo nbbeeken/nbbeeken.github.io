@@ -9,7 +9,6 @@ const writeBtn = document.getElementById('write')!;
 const scans = document.getElementById('scans')!;
 let cardTemplate: HTMLTemplateElement | null = null;
 
-
 const HEART = '\u2665';
 const DIAMOND = '\u2666';
 const SPADE = '\u2660';
@@ -27,14 +26,14 @@ const randomCard = () => {
 
 class ReadingError extends Error {}
 
-const decoder = new TextDecoder('utf-8', {fatal: true})
+const decoder = new TextDecoder('utf-8', { fatal: true });
 
 class NFC {
 	public controller;
 	private reader: NDEFReader;
 	private listeners;
 	private readEvents: Event[] = [];
-	private waitingReaders: { resolve: (value: NDEFReadingEvent) => void; reject: (reason?: any) => void; }[] = [];
+	private waitingReaders: { resolve: (value: NDEFReadingEvent) => void; reject: (reason?: any) => void }[] = [];
 	public errored = null;
 	private pendingWrite: boolean = false;
 
@@ -106,7 +105,6 @@ class NFC {
 		scans?.appendChild(li);
 	}
 
-
 	[Symbol.dispose]() {
 		this.reader.removeEventListener('reading', this.listeners.reading as any);
 		this.reader.removeEventListener('readingerror', this.listeners.readingerror);
@@ -133,8 +131,10 @@ class NFC {
 		document.body.appendChild(card);
 		setTimeout(() => {
 			const cards = Array.from(document.querySelectorAll('.playingcard'));
-			for (const card of cards) card.classList.add('is-deleting')
-			setTimeout(() => { for (const card of cards) card.remove() }, 500)
+			for (const card of cards) card.classList.add('is-deleting');
+			setTimeout(() => {
+				for (const card of cards) card.remove();
+			}, 500);
 		}, 3000);
 	}
 }
@@ -144,23 +144,23 @@ let nfc: NFC | null = null;
 let writeListener: EventListener | null = null;
 scanBtn?.addEventListener('click', async () => {
 	if (enabled) {
-		enabled = !enabled
+		enabled = !enabled;
 
-		nfc?.controller.abort(new Error('off'))
+		nfc?.controller.abort(new Error('off'));
 		nfc = null;
 		scanBtn?.classList.remove('pulse');
-		if (scanBtn) scanBtn.innerText = 'Start scan \u{1f4f4}'
+		if (scanBtn) scanBtn.innerText = 'Start scan \u{1f4f4}';
 
 		if (writeListener) writeBtn.removeEventListener('click', writeListener);
 		writeListener = null;
 	} else {
-		enabled = !enabled
+		enabled = !enabled;
 
 		nfc = await NFC.create();
 
 		writeBtn.addEventListener('click', (writeListener = nfc?.write.bind(nfc)));
 
-		if (scanBtn) scanBtn.innerText = 'NFC is on \u{1F4E1}'
+		if (scanBtn) scanBtn.innerText = 'NFC is on \u{1F4E1}';
 		scanBtn?.classList.add('pulse');
 
 		for await (const event of nfc) {
