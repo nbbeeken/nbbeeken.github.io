@@ -7,6 +7,8 @@ const log = console.log.bind(console);
 const scanBtn = document.getElementById('scan')!;
 const writeBtn = document.getElementById('write')!;
 const scans = document.getElementById('scans')!;
+let cardTemplate: HTMLTemplateElement | null = null;
+
 
 const HEART = '\u2665';
 const DIAMOND = '\u2666';
@@ -55,7 +57,9 @@ class NFC {
 		else this.readEvents.push(event);
 
 		const li = document.createElement('li');
-		li.innerText = `R [${new Date().toLocaleTimeString()}] - ${decoder.decode(event.message.records[0].data)} - ${event.serialNumber}`;
+		const cardText = decoder.decode(event.message.records[0].data);
+		this.showCard(cardText);
+		li.innerText = `R [${new Date().toLocaleTimeString()}] - ${cardText} - ${event.serialNumber}`;
 		scans?.appendChild(li);
 	}
 
@@ -120,6 +124,18 @@ class NFC {
 				yield await promise;
 			}
 		} while (this.errored == null);
+	}
+
+	showCard(this: void, text: string) {
+		cardTemplate ??= document.getElementById('card-template') as HTMLTemplateElement;
+		const card = cardTemplate.content.cloneNode(true) as DocumentFragment;
+		card.querySelector('h2')!.textContent = text;
+		document.body.appendChild(card);
+		setTimeout(() => {
+			const cards = Array.from(document.querySelectorAll('.playingcard'));
+			for (const card of cards) card.classList.add('is-deleting')
+			setTimeout(() => { for (const card of cards) card.remove() }, 500)
+		}, 3000);
 	}
 }
 

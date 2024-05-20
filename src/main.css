@@ -123,3 +123,68 @@ button {
 		box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
 	}
 }
+
+.animate {
+  animation-duration: 0.75s;
+  animation-delay: 0.5s;
+  animation-name: animate-fade;
+  animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+  animation-fill-mode: backwards;
+}
+
+/* Flip In */
+.animate.flip {
+  animation-name: animate-flip;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+@keyframes animate-flip {
+  0% {
+    opacity: 0;
+    transform: rotateX(-120deg) scale(0.9, 0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1, 1);
+  }
+}
+
+/*  0. BEFORE-OPEN STATE   */
+/*  Starting point for the transition */
+@starting-style {
+  .playingcard {
+    opacity: 0;
+		transform: rotateX(-120deg) scale(0.9, 0.9);
+  }
+}
+
+/*  1. IS-OPEN STATE   */
+/*  The state at which the element is open + transition logic */
+.playingcard {
+  background-color: darkgrey;
+	position: absolute;
+	height: 10em;
+	width: 5em;
+	top: 10px;
+	right: 10px;
+
+	overflow: hidden;
+  transition: opacity 0.5s, transform 0.5s, height 0.5s, display 0.5s allow-discrete;
+}
+
+/*  2. EXITING STATE   */
+/*  While it is deleting, before DOM removal in JS, apply this
+    transformation for height, opacity, and a transform which
+    skews the element and moves it to the left before setting
+    it to display: none */
+.is-deleting {
+  opacity: 0;
+  height: 0;
+  display: none;
+  transform: skewX(50deg) translateX(-25vw);
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  * { animation: none !important; }
+}
