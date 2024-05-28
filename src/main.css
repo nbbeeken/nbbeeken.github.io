@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
 	font-family: 'SpaceMono Nerd Font';
 	src: url('./fonts/SpaceMonoRegular.woff2') format('woff2');
 	font-weight: normal;
@@ -11,14 +11,69 @@
 	font-weight: normal;
 	font-style: italic;
 	font-display: swap;
-}
+} */
 
 :root {
 	max-width: 100ch;
 	padding: 2em 1em;
 	margin: auto;
 	line-height: 1.75;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+	--default-font: Verdana, Geneva, Tahoma, sans-serif;
+	--header-font: 'SpaceMono Nerd Font', monospace;
+
+	font-family: var(--default-font);
+
+	/* Variables */
+	--primary-color: #335b7f;
+	--secondary-color: #0080a0;
+	--font-color: black;
+	--body-color: white;
+	--shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+#theme-switch {
+	display: none;
+}
+
+#theme-switch + label {
+	font-size: 1.3rem;
+}
+
+#theme-switch + label:after {
+	content: '🌙';
+}
+
+#theme-switch:checked + label:after {
+	content: '☀';
+}
+
+[data-theme='dark'] {
+	--primary-color: #d7f3ff;
+	--primary-color: #b1d6ff;
+	--body-color: rgb(39, 39, 39);
+	--font-color: white;
+	--shadow-color: #b1d6ffb3;
+}
+
+body {
+	font-family: var(--default-font);
+	background-color: var(--body-color);
+	color: var(--font-color);
+}
+
+a:hover {
+	font-style: normal;
+	text-decoration: underline double;
+}
+
+#resume_link {
+	font-size: 1.3em;
+}
+
+figure {
+	margin-block-start: 0;
+	margin-inline-start: 0;
 }
 
 img {
@@ -27,11 +82,7 @@ img {
 
 code,
 pre {
-	font-family: 'SpaceMono Nerd Font', monospace;
-}
-
-.bio > * {
-	display: inline;
+	font-family: var(--header-font);
 }
 
 main {
@@ -54,26 +105,26 @@ p,
 ul,
 ol {
 	margin-bottom: 2em;
-	color: #1d1d1d;
-	font-family: sans-serif;
+	color: var(--font-color);
+	font-family: var(--default-font);
 	list-style-type: none;
 }
 
 .projects > * > h1,
 h2,
 h3 {
-	font-family: 'SpaceMono Nerd Font', monospace;
+	font-family: var(--header-font);
 }
 
 a {
-	color: steelblue;
+	color: var(--primary-color);
 	text-decoration: none;
 	font-style: italic;
 }
 
 .post-preview {
 	/* Add shadows to create the "card" effect */
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 4px 8px 0 var(--shadow-color);
 	transition: 0.3s;
 	padding: 2px 16px;
 	margin-bottom: 15px;
@@ -83,11 +134,17 @@ a {
 h2,
 h3,
 h4 {
-	font-family: 'SpaceMono Nerd Font', monospace;
+	font-family: var(--header-font);
+}
+
+.post-preview > time {
+	color: var(--secondary-color);
+	float: right;
+	font-family: var(--header-font);
 }
 
 .post-preview:hover {
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 8px 16px 0 var(--shadow-color);
 }
 
 button {

@@ -1,9 +1,12 @@
 {
 	"compilerOptions": {
+		"allowArbitraryExtensions": true,
 		"checkJs": true,
 		"strict": true,
 		"target": "ESNext",
 		"module": "ESNext",
+		"moduleResolution": "Bundler",
 		"lib": ["DOM", "ES2022.Error", "ESNext"]
-	}
+	},
+	"exclude": ["dist", "scripts"]
 }

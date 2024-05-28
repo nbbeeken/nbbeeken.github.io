@@ -31,3 +31,25 @@ export async function once<T>(ee: EventTarget, event: string, options?: { signal
 		if (onAbort != null) options?.signal?.removeEventListener('abort', onAbort);
 	}
 }
+
+export function forElementBySelector<T extends HTMLElement>(selector: string): Promise<T> {
+	const { promise, resolve } = promiseWithResolvers<T>();
+
+	const e = document.querySelector<T>(selector);
+	if (e) {
+		resolve(e);
+		return promise;
+	}
+
+	const observer = new MutationObserver(() => {
+		const element = document.querySelector<T>(selector);
+		if (element) {
+			observer.disconnect();
+			resolve(element);
+		}
+	});
+
+	observer.observe(document.body, { childList: true, subtree: true });
+
+	return promise;
+}

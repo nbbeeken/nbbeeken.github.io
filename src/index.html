@@ -9,9 +9,13 @@
 		<link type="text/css" href="./main.css" rel="stylesheet" />
 	</head>
 	<body>
+		<div>
+			<input type="checkbox" id="theme-switch" />
+			<label for="theme-switch"></label>
+		</div>
 		<main>
 			<h1>Engineer Neal</h1>
-			<div class="bio">
+			<figure class="bio">
 				<img
 					src="https://www.gravatar.com/avatar/1162f5f3ea08008f8454593b3bd72565"
 					title="My face"
@@ -19,13 +23,28 @@
 					height="80"
 					width="80"
 				/>
-				<p>Hello, I am <code>neal</code>!</p>
-			</div>
+				<figcaption>Hello, I am <code>neal</code>!</figcaption>
+			</figure>
 			<div>
-				<a href="./resume.html" title="My resume">Resume</a>
+				<a href="./resume.html" title="My resume" id="resume_link">See my resume</a>
 			</div>
 			<article>
-				<h2>listProjects();</h2>
+				<h2>const neal = new Neal();</h2>
+				<p>
+					I am a dedicated computer scientist with a passion for JavaScript. I earned my Bachelor's degree from Stony
+					Brook University in Spring 2017 and continued to achieve my Master's in Computer Science in Winter 2019. For
+					almost <span id="time-at-mongodb">four</span> years, I've been working on the Node.js driver at MongoDB,
+					improving the package and its supporting modules with Typescript, performance benchmarks, and modern syntax.
+					JavaScript and Node.js became my language of choice when I discovered what it was capable of while working on
+					a cloud performance intensive computing project in school. Since then, I've enjoyed working into every project
+					I get my hands on.
+				</p>
+				<p>
+					Whether we like it or not, JS has got the "run anywhere" goal down, it is just the "writing it once" we have
+					to work on. I'm excited about the future with advancements like WebAssembly changing what it means to write
+					for a JavaScript engine. Let's build together!
+				</p>
+				<h2>neal.listProjects();</h2>
 				<ul>
 					<li>
 						<div class="post-preview">
@@ -34,6 +53,7 @@
 									>Writing a MIPS Simulator and Debugger</a
 								>
 							</h2>
+							<time>October 15, 2018</time>
 							<p>What I learned trying to simulate a basic unstructured language</p>
 						</div>
 					</li>
@@ -42,19 +62,30 @@
 							<h2>
 								<a href="./blog/c_koans.html" title="Programming in C has never been so easy">Making C accessible</a>
 							</h2>
+							<time>August 24, 2017</time>
 							<p>Trying to teach C through testing</p>
+						</div>
+					</li>
+					<li>
+						<div class="post-preview">
+							<h2>
+								<a href="./blog/moon.html" title="A new Operating System">A fresh new operating system</a>
+							</h2>
+							<time>May 17, 2016</time>
+							<p>Will it blend? Getting my code to boot on real hardware!</p>
 						</div>
 					</li>
 				</ul>
 			</article>
 			<article>
-				<h2>getDemos();</h2>
+				<h2>neal.showDemos();</h2>
 				<ul>
 					<li>
 						<div class="post-preview">
 							<h2>
 								<a href="./demos/cards.html" title="Using NFC tags for fun and profit">NFC playing cards</a>
 							</h2>
+							<time>May 01, 2024</time>
 							<p>Did you know the browser is capable of NFC technologies?</p>
 						</div>
 					</li>
@@ -62,4 +93,5 @@
 			</article>
 		</main>
 	</body>
+	<script type="module" src="./theme.ts"></script>
 </html>

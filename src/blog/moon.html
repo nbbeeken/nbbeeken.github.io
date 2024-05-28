@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>MoonOS</title>
+		<link type="image/png" href="../images/favicon.png" rel="shortcut icon" />
+		<link type="image/png" href="../images/favicon.png" rel="apple-touch-icon" />
+		<link type="text/css" href="../main.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div>
+			<input type="checkbox" id="theme-switch" />
+			<label for="theme-switch"></label>
+		</div>
+		<main>
+			<article>
+				<h2>Moon OS</h2>
+				<section>
+					<h3>From the ground up!</h3>
+					<p>
+						Using only the BSD Bootloader as a starting point, my partner and I began on the treacherous journey of OS
+						development.
+					</p>
+					<img alt="A screenshot of a terminal running Moon OS" src="../images/moonos.png" />
+					<h5>Features include:</h5>
+					<ul>
+						<li>A basic shell running in userland ring-3</li>
+						<li>Virtual Address spaces</li>
+						<li>Context switching</li>
+						<li>AHCI driver for hard drive</li>
+						<li>TarFS driver for bootstrapping built in programs</li>
+						<li>A VFS abstraction layer for future file systems</li>
+						<li>Timer interrupts, Keyboard interrupts, Graceful pagefault handling</li>
+					</ul>
+				</section>
+			</article>
+		</main>
+	</body>
+	<script type="module" src="../theme.ts"></script>
+</html>
