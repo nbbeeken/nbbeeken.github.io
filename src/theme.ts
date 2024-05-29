@@ -1,7 +1,6 @@
 import { forElementBySelector } from './utils';
 
-async function setupThemeSwitch() {
-	const themeSwitch = await forElementBySelector<HTMLInputElement>('#theme-switch');
+forElementBySelector<HTMLInputElement>('#theme-switch').then(([themeSwitch]) => {
 	const currentTheme = localStorage.getItem('theme');
 
 	if (matchMedia('(prefers-color-scheme: dark)').matches || currentTheme === 'dark') {
@@ -20,11 +19,5 @@ async function setupThemeSwitch() {
 		}
 	};
 
-	themeSwitch?.addEventListener('change', themeChange);
-}
-
-async function main() {
-	await setupThemeSwitch();
-}
-
-main().then(undefined, console.error);
+	themeSwitch.addEventListener('change', themeChange);
+});
