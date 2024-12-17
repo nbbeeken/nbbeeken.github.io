@@ -72,3 +72,47 @@ export function relativeDateDiff(date1: Date, date2: Date) {
 
 	throw new Error('unable to find unit');
 }
+
+export function toast(error: { toString(): string }) {
+	const toastCard = document.createElement('div');
+	toastCard.innerText = error.toString();
+	Object.assign(toastCard.style, {
+		position: 'absolute', // Positioning type
+		bottom: '20px', // Distance from bottom
+		right: '20px', // Distance from right
+		backgroundColor: '#333', // Background color
+		color: '#fff', // Text color
+		padding: '5px 10px', // Inner spacing
+		borderRadius: '8px', // Rounded corners
+		boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Drop shadow
+		fontSize: '14px', // Font size
+		zIndex: '1000', // Ensure it's on top
+		opacity: '0', // Start transparent
+		transition: 'opacity 0.3s ease, transform 0.3s ease',
+		transform: 'translateY(20px)', // Slide-up animation
+	});
+	document.body.appendChild(toastCard);
+	requestAnimationFrame(() => {
+		toastCard.style.opacity = '1';
+		toastCard.style.transform = 'translateY(0)';
+	});
+
+	function dismissNotification() {
+		toastCard.style.opacity = '0';
+		toastCard.style.transform = 'translateY(20px)';
+
+		toastCard.addEventListener('transitionend', () => {
+			if (toastCard.parentElement) {
+				toastCard.parentElement.removeChild(toastCard);
+			}
+		});
+	}
+
+	const timeoutId = setTimeout(dismissNotification, 5000);
+
+	// Dismiss notification immediately on click or touch
+	toastCard.addEventListener('click', () => {
+		clearTimeout(timeoutId); // Prevent the timeout from firing
+		dismissNotification();
+	});
+}

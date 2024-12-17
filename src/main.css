@@ -30,6 +30,7 @@
 	--font-color: black;
 	--body-color: white;
 	--shadow-color: rgba(0, 0, 0, 0.2);
+	--pulse-color: rgba(0, 105, 0, 0.8);
 }
 
 #theme-switch {
@@ -54,6 +55,7 @@
 	--body-color: rgb(39, 39, 39);
 	--font-color: white;
 	--shadow-color: #b1d6ffb3;
+	--pulse-color: rgba(4, 168, 4, 0.8);
 }
 
 body {
@@ -174,7 +176,7 @@ button {
 
 @keyframes pulse-animation {
 	0% {
-		box-shadow: 0 0 0 0px rgba(0, 105, 0, 0.8);
+		box-shadow: 0 0 0 0px var(--pulse-color);
 	}
 	100% {
 		box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
@@ -264,4 +266,8 @@ thead {
 tbody td + td {
 	padding: 0.75em;
 	border-left: 1px dotted var(--font-color);
+}
+
+#lock {
+	font-size: 1.7em;
 }
