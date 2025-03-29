@@ -6,208 +6,302 @@
 		<title>Neal's Resume</title>
 		<link type="image/png" href="./images/favicon.png" rel="shortcut icon" />
 		<link type="image/png" href="./images/favicon.png" rel="apple-touch-icon" />
-		<link type="text/css" href="./main.css" rel="stylesheet" />
+		<style>
+			/* Typography hierarchy */
+			body {
+				font-family: sans-serif;
+				margin: 2% 10%;
+				font-size: 13px;
+				line-height: 1.4;
+				color: #111;
+			}
+
+			h1 {
+				font-size: 1.8rem;
+				margin-bottom: 0.2em;
+			}
+
+			h2 {
+				font-size: 1.4rem;
+				border-bottom: 1px solid black;
+				padding-bottom: 0.2em;
+				margin-top: 0.2em;
+				margin-bottom: 0.1em;
+			}
+
+			h3 {
+				font-size: 1.1rem;
+				margin: 0.4em 0 0.2em;
+			}
+
+			h4 {
+				margin: 0.4em 0 0.2em;
+			}
+
+			p {
+				margin: 0.3em 0;
+				text-align: justify;
+			}
+
+			#eduAndProfGrid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				row-gap: 0.4rem;
+				column-gap: 2rem;
+				margin-top: 1rem;
+			}
+
+			.education-entry {
+				grid-column: span 1;
+			}
+
+			.proficiency p {
+				margin: 0;
+			}
+
+			.proficiency span {
+				font-weight: bold;
+			}
+
+			/* Tags and utility classes */
+			.tag {
+				display: inline-block;
+				font-size: 0.75em;
+				color: #006400;
+				background: #f0f0f0;
+				padding: 2px 6px;
+				margin-right: 4px;
+				margin-top: 4px;
+				border-radius: 3px;
+			}
+
+			.date {
+				font-size: 0.9em;
+				color: #000;
+			}
+
+			.description {
+				font-size: 0.95em;
+			}
+
+			.hr {
+				border-bottom: 1px solid black;
+				padding-bottom: 0.2em;
+			}
+
+			/* Print styles */
+			@media print {
+				body {
+					margin: 0.35in 0.35in 0.3in;
+					font-size: 11px;
+					line-height: 1.3;
+				}
+
+				h1 {
+					font-size: 1.4rem;
+					margin-bottom: 0.1em;
+				}
+
+				h2 {
+					font-size: 1.1rem;
+					margin-top: 0.6em;
+					margin-bottom: 0.4em;
+				}
+
+				h3 {
+					font-size: 1rem;
+					margin: 0.2em 0 0.1em;
+				}
+
+				p,
+				.description {
+					font-size: 10px;
+					margin: 0.2em 0;
+				}
+
+				.date {
+					font-size: 0.75em;
+				}
+
+				.tag {
+					font-size: 0.65em;
+				}
+
+				#eduAndProfGrid {
+					gap: 0.4rem 1rem;
+				}
+
+
+			}
+		</style>
 	</head>
 	<body>
 		<section>
 			<header>
 				<div>
 					<h1>Neal Beeken</h1>
-					<h3>Brooklyn, NY</h3>
+					<h3 class="hr">Brooklyn, NY</h3>
 				</div>
 			</header>
+			<section>
+				<p>
+					I'm a systems-minded JavaScript engineer with a deep foundation in computer science and a passion for building
+					robust, modern tooling. With over five years at MongoDB, I led the transformation of the Node.js driver and
+					supporting libraries—modernizing our architecture, improving performance, and raising engineering standards
+					across the board. My background spans low-level systems, browser runtimes, and distributed software, allowing
+					me to design solutions that balance deep technical understanding with practical developer experience. I bring
+					curiosity, long-term thinking, and a drive to elevate the software I work on—and I'm excited to bring that
+					energy to new challenges.
+				</p>
+			</section>
 			<section id="Education">
-				<h2>Education</h2>
-				<hr />
-				<div>
-					<div>Stony Brook University of New York</div>
-				</div>
-				<div>
-					<div class="four columns description"><strong>Bachelors</strong> in Computer Science.</div>
-					<div class="three columns date">Aug '13 - May '17</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<div class="four columns description"><strong>Masters</strong> in Computer Science.</div>
-					<div class="three columns date">Aug '17 - Dec '19</div>
+				<h2>Education and Proficiencies</h2>
+				<div id="eduAndProfGrid">
+					<!-- Row 1 -->
+					<div class="education-entry">
+						<div>Stony Brook University of New York</div>
+						<div class="description"><strong>Bachelors</strong> in Computer Science</div>
+						<div class="date">Aug '13 - May '17</div>
+					</div>
+					<div class="proficiency">
+						<p>JavaScript/TypeScript</p>
+						<p><span>Expert</span></p>
+					</div>
+					<div class="proficiency">
+						<p>Python</p>
+						<p><span>Proficient</span></p>
+					</div>
+					<div class="proficiency">
+						<p>Node.js/Browser</p>
+						<p><span>Expert</span></p>
+					</div>
+
+					<!-- Row 2 -->
+					<div class="education-entry">
+						<div>Stony Brook University of New York</div>
+						<div class="description"><strong>Masters</strong> in Computer Science</div>
+						<div class="date">Aug '17 - Dec '19</div>
+					</div>
+					<div class="proficiency">
+						<p>C++</p>
+						<p><span>Familiar</span></p>
+					</div>
+					<div class="proficiency">
+						<p>Networking/HTTP/Sockets</p>
+						<p><span>Core Expertise</span></p>
+					</div>
+					<div class="proficiency">
+						<!-- one more -->
+					</div>
 				</div>
 			</section>
 			<div class="verticle-spacer"></div>
 			<section id="Experience">
 				<h2>Experience</h2>
-				<hr />
 				<div>
 					<div class="one column"></div>
-					<div>Software Engineer</div>
-					<span>MongoDB</span>
-					<div class="three columns date">Jan '20 - Current</div>
+					<h4>Senior Software Engineer — MongoDB</h4>
+					<span></span>
+					<div class="three columns date">Feb '24 - Current</div>
 				</div>
 				<div>
 					<div class="one column"></div>
 					<p class="eleven columns description">
-						Maintainer of the Node.js Driver for MongoDB. Assists with project planning feature development and cross
-						language specifications for consistent implementations. Familiar with distributed system algorithms and
-						their solutions. Familiarity with the npm and node ecosystem as well as the responsibilities of library
-						publishing with respect to versioning and compatibility.
+						Leading maintainer of the MongoDB Node.js Driver. Led cross-cutting initiatives around logging
+						standardization, async tracing, and Cloudflare Worker support. Introduced automation for driver releases and
+						publishing, improving release confidence and reducing manual work. Produced clear and forward-looking
+						technical documents, facilitating decision-making on breaking changes, deprecations, and ecosystem
+						direction. Modeled best practices in communication, planning, and mentorship within the team.
 					</p>
 				</div>
 				<div>
 					<div class="one column"></div>
-					<div>Software Engineer Intern</div>
-					<span>MongoDB</span>
-					<div class="three columns date">May '19 - Aug '19</div>
+					<h4>Software Engineer — MongoDB</h4>
+					<div class="three columns date">Jan '20 - Feb '24</div>
 				</div>
 				<div>
 					<div class="one column"></div>
 					<p class="eleven columns description">
-						Integrated member of the Cloud Monitoring team assisting corporate clients in managing onsite or MongoDB
-						Atlas deployments. Worked on collecting, persisting, and displaying database accesses for client compliance
-						requirements.
-					</p>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<div>Graduate Teaching Assistant</div>
-					<span>Stony Brook University</span>
-					<div class="three columns date">Aug '17 - May '18</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Assisted in creating coding assignment documentation and regression unit tests for students. Led a team of
-						Teaching Assistants by supervising the development of homework assignments. Created robust Python scripts to
-						automate testing of student submissions for grading.
-					</p>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<div>Android Developer</div>
-					<span>Smart Transit at CEWIT</span>
-					<div class="three columns date">Aug '17 - May '18</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Repaired and maintained existing campus bus and shuttle tracking Android app in Java. Recreated the Android
-						app in Kotlin, reducing app size by 50% and improving network performance, user experience, and user
-						interface responsiveness.
+						Maintainer of the MongoDB Node.js Driver. Drove technical design efforts across features like async stack
+						traces, cursor APIs, and BSON modernization. Owned long-term improvements to project structure and developer
+						workflows. Championed ecosystem alignment through specification work, versioning strategy, and compatibility
+						guarantees. Contributed broadly to team planning, release coordination, and improving cross-functional
+						communication with other language driver teams.
 					</p>
 				</div>
 			</section>
 			<div class="verticle-spacer"></div>
 			<section id="Projects">
 				<h2>Projects</h2>
-				<hr />
+				<div>
+					<div class="one column" style="width: 3%"><i class="nf nf-mdi-nodejs"></i></div>
+					<h4>&quot;MongoDB Node.js Driver&quot; — Open Source Database Client Library</h4>
+					<span class="tag">#nodejs</span>
+					<span class="tag">#typescript</span>
+					<span class="tag">#spec-compliance</span>
+					<span class="tag">#async</span>
+					<span class="tag">#mongodb</span>
+					<div class="three columns date">Jan '20 - Current</div>
+				</div>
+				<div>
+					<div class="one column"></div>
+					<p class="eleven columns description">
+						Primary maintainer of the official MongoDB Node.js driver. Delivered improvements to async stack trace
+						behavior, transaction API design, and cursor internals. Helped drive spec compliance across language
+						drivers. Shaped project strategy through release automation, improved observability, and developer-focused
+						ergonomics. Regularly authored design docs to inform architecture, breaking changes, and new feature work.
+					</p>
+				</div>
+				<div>
+					<div class="one column" style="width: 3%"><i class="nf nf-dev-npm"></i></div>
+					<h4>&quot;BSON&quot; — Serialization Format for MongoDB</h4>
+					<span class="tag">#javascript</span>
+					<span class="tag">#serialization</span>
+					<span class="tag">#interop</span>
+					<span class="tag">#web</span>
+					<span class="tag">#bson</span>
+					<div class="three columns date">'20 - Current</div>
+				</div>
+				<div>
+					<div class="one column"></div>
+					<p class="eleven columns description">
+						Maintainer of the BSON JavaScript library, used across MongoDB drivers and tools. Led modernization and
+						cleanup for the next generation of front and backend unified javascript compatibility. Designed,
+						implemented, and prevented regressions on major performance improvements that significantly sped up
+						operations on strings without requiring changes for downstream projects.
+					</p>
+				</div>
 				<div>
 					<div class="one column" style="width: 3%"><i class="nf nf-seti-python"></i></div>
-					<div>&quot;Dashmips&quot; — MIPS Assembly Simulator</div>
-					<span>#python</span>
-					<span>#regex</span>
-					<span>#mips</span>
+					<h4>&quot;Dashmips&quot; — MIPS Assembly Simulator</h4>
+					<span class="tag">#python</span>
+					<span class="tag">#regex</span>
+					<span class="tag">#mips</span>
 					<div class="three columns date">Jun '18 - Aug '20</div>
 				</div>
 				<div>
 					<div class="one column"></div>
 					<p class="eleven columns description">
-						Command line Python package to simulate a MIPS program by interpreting assembly text. Future plans for an
-						editor extension that enables MIPS debugging and visualization.
-					</p>
-				</div>
-				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-dev-git"></i></div>
-					<div>&quot;DASH&quot; — Automated Interactive Course Orchestration</div>
-					<span>#python</span>
-					<span>#gitlab</span>
-					<span>#git</span>
-					<div class="three columns date">Aug '17 - Apr '18</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Interactive tool to assist deploying a private gitlab instance for the purpose of source submission along
-						with assignment distribution.
+						Command line Python package to simulate a MIPS program by interpreting assembly text. A corresponding Visual
+						Studio Code editor extension that runs a MIPS debugger and many memory layout visualizations.
 					</p>
 				</div>
 				<div>
 					<div class="one column" style="width: 3%"><i class="nf nf-custom-c"></i></div>
-					<div>&quot;Moon OS&quot; — Operating System</div>
-					<span>#c</span>
-					<span>#x86_64</span>
-					<span>#shell</span>
-					<span>#memory allocator</span>
-					<span>#ahci</span>
-					<span>#qemu</span>
+					<h4>&quot;Moon OS&quot; — Operating System</h4>
+					<span class="tag">#c</span>
+					<span class="tag">#x86_64</span>
+					<span class="tag">#shell</span>
+					<span class="tag">#memory allocator</span>
+					<span class="tag">#ahci</span>
+					<span class="tag">#qemu</span>
 					<div class="three columns date">Aug '17 - Dec '17</div>
 				</div>
 				<div>
 					<div class="one column"></div>
 					<p class="eleven columns description">
 						64-bit operating system in C targeting the x86_64 platform. Features include context switching, AHCI driver
-						virtual memory management, copy-on-write fork, and userspace processes. Tested on hardware.
-					</p>
-				</div>
-				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-mdi-nodejs"></i></div>
-					<div>&quot;Glitter&quot; — Full Stack Social Networking Web App</div>
-					<span>#nodejs</span>
-					<span>#ansible</span>
-					<span>#mongodb</span>
-					<span>#IAAS</span>
-					<div class="three columns date">Jan '17 - May '17</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						RESTful social networking service written in NodeJS. The service was deployed to a private cloud using
-						Ansible and scaled to respond to millions of client requests using multi-process clustering and a sharded
-						MongoDB database.
-					</p>
-				</div>
-				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-seti-python"></i></div>
-					<div>&quot;Wolfie Script&quot; — Original Scripting Language</div>
-					<span>#python</span>
-					<span>#ply</span>
-					<span>#AST</span>
-					<div class="three columns date">May '16 - Aug '16</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Original scripting language implemented using the Python PLY (yacc/lex) library with support for: duck type
-						variables, shallow scoping, if/else statements, while loops.
-					</p>
-				</div>
-				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-dev-angular"></i></div>
-					<div>&quot;Atomic Comics&quot; — Comic Creation Web App</div>
-					<span>#angularjs</span>
-					<span>#java</span>
-					<span>#HTML5 Canvas</span>
-					<span>#PAAS</span>
-					<div class="three columns date">Jan '16 - May '16</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						AngularJS and Java web app deployed to PAAS environment. Features include saving user-generated content from
-						HTML5 Canvas, publishing canvas contents to the landing page, and enabling users to modify saved work.
-					</p>
-				</div>
-				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-fae-java"></i></div>
-					<div>&quot;WolfieBall&quot; — Fantasy Baseball Desktop Application</div>
-					<span>#java</span>
-					<span>#JSON</span>
-					<span>#multithreading</span>
-					<div class="three columns date">Jan '15 - May '15</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Desktop application written in Java and JavaFX that allowed users to load saved MLB JSON data, construct
-						fantasy baseball teams manually, and auto-generate teams in a separate thread. Two years later helped
-						professor win his MLB Fantasy League (Apr '17).
+						virtual memory management, copy-on-write fork, and userspace processes. Runs on real hardware.
 					</p>
 				</div>
 			</section>
