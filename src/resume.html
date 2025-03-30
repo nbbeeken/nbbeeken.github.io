@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>Neal's Resume</title>
+		<meta name="robots" content="noindex"/>
 		<link type="image/png" href="./images/favicon.png" rel="shortcut icon" />
 		<link type="image/png" href="./images/favicon.png" rel="apple-touch-icon" />
 		<style>
@@ -75,7 +76,7 @@
 				border-radius: 3px;
 			}
 
-			.date {
+			time {
 				font-size: 0.9em;
 				color: #000;
 			}
@@ -119,7 +120,7 @@
 					margin: 0.2em 0;
 				}
 
-				.date {
+				time {
 					font-size: 0.75em;
 				}
 
@@ -130,8 +131,6 @@
 				#eduAndProfGrid {
 					gap: 0.4rem 1rem;
 				}
-
-
 			}
 		</style>
 	</head>
@@ -154,14 +153,56 @@
 					energy to new challenges.
 				</p>
 			</section>
+			<section id="Experience">
+				<h2>Experience</h2>
+				<div>
+					<h4>Senior Software Engineer — MongoDB</h4>
+					<span></span>
+					<time datetime="P1Y1M">Feb '24 - Current</time>
+				</div>
+				<div>
+					<p class="description">
+						Leading maintainer of the MongoDB Node.js Driver. Led cross-cutting initiatives around logging
+						standardization, async tracing, and Cloudflare Worker support. Introduced automation for driver releases and
+						publishing, improving release confidence and reducing manual work. Produced clear and forward-looking
+						technical documents, facilitating decision-making on breaking changes, deprecations, and ecosystem
+						direction. Modeled best practices in communication, planning, and mentorship within the team.
+					</p>
+				</div>
+				<div>
+					<h4>Software Engineer — MongoDB</h4>
+					<time datetime="P4Y1M">Jan '20 - Feb '24</time>
+				</div>
+				<div>
+					<p class="description">
+						Maintainer of the MongoDB Node.js Driver. Drove technical design efforts across features like async stack
+						traces, cursor APIs, and BSON modernization. Owned long-term improvements to project structure and developer
+						workflows. Championed ecosystem alignment through specification work, versioning strategy, and compatibility
+						guarantees. Contributed broadly to team planning, release coordination, and improving cross-functional
+						communication with other language driver teams.
+					</p>
+				</div>
+				<div>
+					<h4>Teaching Assistant — Stony Brook University</h4>
+					<time datetime="P3Y">Jan '16 - Dec '18</time>
+				</div>
+				<div>
+					<p class="description">
+						Assisted in creating coding assignment documentation and regression unit tests for students. Led a team of
+						Teaching Assistants by supervising the development of homework assignments. Created robust Python scripts to
+						automate testing of student submissions for grading.
+					</p>
+				</div>
+			</section>
+			<div class="verticle-spacer"></div>
 			<section id="Education">
 				<h2>Education and Proficiencies</h2>
 				<div id="eduAndProfGrid">
 					<!-- Row 1 -->
 					<div class="education-entry">
 						<div>Stony Brook University of New York</div>
-						<div class="description"><strong>Bachelors</strong> in Computer Science</div>
-						<div class="date">Aug '13 - May '17</div>
+						<div class="description"><strong>Masters</strong> in Computer Science</div>
+						<time datetime="P2Y4M">Aug '17 - Dec '19</time>
 					</div>
 					<div class="proficiency">
 						<p>JavaScript/TypeScript</p>
@@ -179,8 +220,8 @@
 					<!-- Row 2 -->
 					<div class="education-entry">
 						<div>Stony Brook University of New York</div>
-						<div class="description"><strong>Masters</strong> in Computer Science</div>
-						<div class="date">Aug '17 - Dec '19</div>
+						<div class="description"><strong>Bachelors</strong> in Computer Science</div>
+						<time datetime="P3Y9M">Aug '13 - May '17</time>
 					</div>
 					<div class="proficiency">
 						<p>C++</p>
@@ -196,56 +237,19 @@
 				</div>
 			</section>
 			<div class="verticle-spacer"></div>
-			<section id="Experience">
-				<h2>Experience</h2>
-				<div>
-					<div class="one column"></div>
-					<h4>Senior Software Engineer — MongoDB</h4>
-					<span></span>
-					<div class="three columns date">Feb '24 - Current</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Leading maintainer of the MongoDB Node.js Driver. Led cross-cutting initiatives around logging
-						standardization, async tracing, and Cloudflare Worker support. Introduced automation for driver releases and
-						publishing, improving release confidence and reducing manual work. Produced clear and forward-looking
-						technical documents, facilitating decision-making on breaking changes, deprecations, and ecosystem
-						direction. Modeled best practices in communication, planning, and mentorship within the team.
-					</p>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<h4>Software Engineer — MongoDB</h4>
-					<div class="three columns date">Jan '20 - Feb '24</div>
-				</div>
-				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						Maintainer of the MongoDB Node.js Driver. Drove technical design efforts across features like async stack
-						traces, cursor APIs, and BSON modernization. Owned long-term improvements to project structure and developer
-						workflows. Championed ecosystem alignment through specification work, versioning strategy, and compatibility
-						guarantees. Contributed broadly to team planning, release coordination, and improving cross-functional
-						communication with other language driver teams.
-					</p>
-				</div>
-			</section>
-			<div class="verticle-spacer"></div>
 			<section id="Projects">
 				<h2>Projects</h2>
 				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-mdi-nodejs"></i></div>
 					<h4>&quot;MongoDB Node.js Driver&quot; — Open Source Database Client Library</h4>
 					<span class="tag">#nodejs</span>
 					<span class="tag">#typescript</span>
 					<span class="tag">#spec-compliance</span>
 					<span class="tag">#async</span>
 					<span class="tag">#mongodb</span>
-					<div class="three columns date">Jan '20 - Current</div>
+					<time>Jan '20 - Current</time>
 				</div>
 				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
+					<p class="description">
 						Primary maintainer of the official MongoDB Node.js driver. Delivered improvements to async stack trace
 						behavior, transaction API design, and cursor internals. Helped drive spec compliance across language
 						drivers. Shaped project strategy through release automation, improved observability, and developer-focused
@@ -253,18 +257,17 @@
 					</p>
 				</div>
 				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-dev-npm"></i></div>
+					
 					<h4>&quot;BSON&quot; — Serialization Format for MongoDB</h4>
 					<span class="tag">#javascript</span>
 					<span class="tag">#serialization</span>
 					<span class="tag">#interop</span>
 					<span class="tag">#web</span>
 					<span class="tag">#bson</span>
-					<div class="three columns date">'20 - Current</div>
+					<time>'20 - Current</time>
 				</div>
 				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
+					<p class="description">
 						Maintainer of the BSON JavaScript library, used across MongoDB drivers and tools. Led modernization and
 						cleanup for the next generation of front and backend unified javascript compatibility. Designed,
 						implemented, and prevented regressions on major performance improvements that significantly sped up
@@ -272,22 +275,20 @@
 					</p>
 				</div>
 				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-seti-python"></i></div>
 					<h4>&quot;Dashmips&quot; — MIPS Assembly Simulator</h4>
 					<span class="tag">#python</span>
 					<span class="tag">#regex</span>
 					<span class="tag">#mips</span>
-					<div class="three columns date">Jun '18 - Aug '20</div>
+					<time>Jun '18 - Aug '20</time>
 				</div>
 				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
+					<p class="description">
 						Command line Python package to simulate a MIPS program by interpreting assembly text. A corresponding Visual
 						Studio Code editor extension that runs a MIPS debugger and many memory layout visualizations.
 					</p>
 				</div>
 				<div>
-					<div class="one column" style="width: 3%"><i class="nf nf-custom-c"></i></div>
+					<div style="width: 3%"><i class="nf nf-custom-c"></i></div>
 					<h4>&quot;Moon OS&quot; — Operating System</h4>
 					<span class="tag">#c</span>
 					<span class="tag">#x86_64</span>
@@ -295,13 +296,12 @@
 					<span class="tag">#memory allocator</span>
 					<span class="tag">#ahci</span>
 					<span class="tag">#qemu</span>
-					<div class="three columns date">Aug '17 - Dec '17</div>
+					<time>Aug '17 - Dec '17</time>
 				</div>
 				<div>
-					<div class="one column"></div>
-					<p class="eleven columns description">
-						64-bit operating system in C targeting the x86_64 platform. Features include context switching, AHCI driver
-						virtual memory management, copy-on-write fork, and userspace processes. Runs on real hardware.
+					<p class="description">
+						64-bit operating system in C targeting x86_64. Features include context switching, AHCI driver virtual
+						memory management, copy-on-write fork, and userspace processes. Runs on real hardware.
 					</p>
 				</div>
 			</section>

@@ -11,9 +11,9 @@
 		"lint": "node ./scripts/lint_html.mjs"
 	},
 	"devDependencies": {
-		"parcel": "^2.12.0",
-		"prettier": "^3.3.3",
-		"typescript": "^5.5.3",
-		"vnu-jar": "^23.4.11"
+		"parcel": "^2.14.4",
+		"prettier": "^3.5.3",
+		"typescript": "^5.8.2",
+		"vnu-jar": "^24.10.17"
 	}
 }
