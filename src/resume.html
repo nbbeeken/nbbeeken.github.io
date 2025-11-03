@@ -39,6 +39,21 @@
 				margin: 0.4em 0 0.2em;
 			}
 
+			#Experience > div {
+				display: flex;
+				align-items: baseline;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+			}
+
+			#Experience > div > h4 {
+				margin: 0;
+			}
+
+			#Experience > div > time {
+				margin-left: auto;
+			}
+
 			p {
 				margin: 0.3em 0;
 				text-align: justify;
@@ -136,6 +151,7 @@
 
 				#eduAndProfGrid {
 					gap: 0.4rem 1rem;
+					grid-template-columns: 1.5fr 1fr 1fr 1fr;
 				}
 
 				section {
@@ -166,9 +182,22 @@
 			<section id="Experience">
 				<h2>Experience</h2>
 				<div>
-					<h4>Senior Software Engineer — MongoDB</h4>
+					<h4>Senior Software Engineer — DevTools MongoDB</h4>
 					<span></span>
-					<time datetime="P1Y1M">Feb '24 - Current</time>
+					<time datetime="P1Y1M">May '25 - Current</time>
+				</div>
+				<div>
+					<p class="description">
+						Worked on kubernetes deployed Java back-end novel websocket service to enable the Node.js driver to work in the browser.
+						My team and I made it possible to reuse an electron desktop app code base in the browser to modernize the user interface for
+						interacting with your MongoDB database. Dealt with latency issues related to Websockets and invented novel approaches to
+						make the user experience as performant as possible. Improved the latency by 50% before General Availability deadline.
+					</p>
+				</div>
+				<div>
+					<h4>Senior Software Engineer — Node.js Driver MongoDB</h4>
+					<span></span>
+					<time datetime="P1Y1M">Feb '24 - Apr '25</time>
 				</div>
 				<div>
 					<p class="description">
