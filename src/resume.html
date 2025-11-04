@@ -17,6 +17,19 @@
 				color: #111;
 			}
 
+			a {
+				color: #2c5aa0;
+				text-decoration: none;
+			}
+
+			a:visited {
+				color: #2c5aa0;
+			}
+
+			a:hover {
+				text-decoration: underline;
+			}
+
 			h1 {
 				font-size: 1.8rem;
 				margin-bottom: 0.2em;
@@ -52,6 +65,34 @@
 
 			#Experience > div > time {
 				margin-left: auto;
+			}
+
+			#Projects > div {
+				display: flex;
+				align-items: baseline;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+			}
+
+			#Projects > div > h4 {
+				margin: 0;
+			}
+
+			#Projects > div > time {
+				margin-left: auto;
+			}
+
+			#Projects .tags {
+				display: block;
+				width: 100%;
+			}
+
+			#Projects > div > h4:first-child {
+				margin-top: 0.6em;
+			}
+
+			#Projects > div:first-of-type > h4 {
+				margin-top: 0;
 			}
 
 			p {
@@ -113,10 +154,15 @@
 				}
 
 				body {
-					margin: 0.35in 0.35in 0.3in;
+					margin: 0.01in 0.03in 0.01in;
 					padding: 0;
 					font-size: 11px;
 					line-height: 1.29;
+				}
+
+				* {
+					print-color-adjust: exact;
+					-webkit-print-color-adjust: exact;
 				}
 
 				h1 {
@@ -147,6 +193,12 @@
 
 				.tag {
 					font-size: 0.65em;
+					margin-top: 2px;
+				}
+
+				#Projects .tags {
+					margin-top: 0;
+					margin-bottom: 0.1em;
 				}
 
 				#eduAndProfGrid {
@@ -170,7 +222,7 @@
 			</header>
 			<section>
 				<p>
-					I'm a systems-minded JavaScript engineer with a deep foundation in computer science and a passion for building
+					I'm a systems-minded polyglot engineer with a deep foundation in computer science and a passion for building
 					robust, modern tooling. With over five years at MongoDB, I led the transformation of the Node.js driver and
 					supporting libraries—modernizing our architecture, improving performance, and raising engineering standards
 					across the board. My background spans low-level systems, browser runtimes, and distributed software, allowing
@@ -271,7 +323,8 @@
 						<p><span>Core Expertise</span></p>
 					</div>
 					<div class="proficiency">
-						<!-- one more -->
+						<p>Java</p>
+						<p><span>Familiar</span></p>
 					</div>
 				</div>
 			</section>
@@ -279,30 +332,47 @@
 			<section id="Projects">
 				<h2>Projects</h2>
 				<div>
-					<h4>&quot;MongoDB Node.js Driver&quot; — Open Source Database Client Library</h4>
-					<span class="tag">#nodejs</span>
-					<span class="tag">#typescript</span>
-					<span class="tag">#spec-compliance</span>
-					<span class="tag">#async</span>
-					<span class="tag">#mongodb</span>
-					<time>Jan '20 - Current</time>
+					<h4>&quot;<a href="https://www.mongodb.com/company/blog/product-release-announcements/new-data-management-experience-in-atlas-ui">Atlas Data Explorer Backend</a>&quot; — Web UI for viewing and managing your database</h4>
+					<span></span>
+					<time>May '25 - Current</time>
+					<div class="tags">
+						<span class="tag">#nodejs</span>
+						<span class="tag">#typescript</span>
+						<span class="tag">#spec-compliance</span>
+						<span class="tag">#async</span>
+						<span class="tag">#mongodb</span>
+					</div>
+				</div>
+				<div>
+					<h4>&quot;<a href="https://www.mongodb.com/docs/drivers/node/current/">MongoDB Node.js Driver</a>&quot; — Open Source Database Client Library</h4>
+					<span></span>
+					<time>Jan '20 - May '25'</time>
+					<div class="tags">
+						<span class="tag">#nodejs</span>
+						<span class="tag">#typescript</span>
+						<span class="tag">#spec-compliance</span>
+						<span class="tag">#async</span>
+						<span class="tag">#mongodb</span>
+					</div>
 				</div>
 				<div>
 					<p class="description">
-						Primary maintainer of the official MongoDB Node.js driver. Delivered improvements to async stack trace
-						behavior, transaction API design, and cursor internals. Helped drive spec compliance across language
-						drivers. Shaped project strategy through release automation, improved observability, and developer-focused
-						ergonomics. Regularly authored design docs to inform architecture, breaking changes, and new feature work.
+						Browser-based MongoDB management interface delivering the complete Compass desktop experience—data browsing,
+						aggregations, indexing, schema analysis—through a globally scaled WebSocket service. The primary onboarding
+						experience for MongoDB developers and DBAs interacting with their Atlas databases.
 					</p>
 				</div>
 				<div>
-					<h4>&quot;BSON&quot; — Serialization Format for MongoDB</h4>
-					<span class="tag">#javascript</span>
-					<span class="tag">#serialization</span>
-					<span class="tag">#interop</span>
-					<span class="tag">#web</span>
-					<span class="tag">#bson</span>
-					<time>'20 - Current</time>
+					<h4>&quot;<a href="https://github.com/mongodb/js-bson">BSON</a>&quot; — Serialization Format for MongoDB</h4>
+					<span></span>
+					<time>Jan '20 - May '25</time>
+					<div class="tags">
+						<span class="tag">#javascript</span>
+						<span class="tag">#serialization</span>
+						<span class="tag">#interop</span>
+						<span class="tag">#web</span>
+						<span class="tag">#bson</span>
+					</div>
 				</div>
 				<div>
 					<p class="description">
@@ -313,11 +383,14 @@
 					</p>
 				</div>
 				<div>
-					<h4>&quot;Dashmips&quot; — MIPS Assembly Simulator</h4>
-					<span class="tag">#python</span>
-					<span class="tag">#regex</span>
-					<span class="tag">#mips</span>
+					<h4>&quot;<a href="https://marketplace.visualstudio.com/items?itemName=roadkillco.dashmips-debugger">Dashmips</a>&quot; — MIPS Assembly Simulator</h4>
+					<span></span>
 					<time>Jun '18 - Aug '20</time>
+					<div class="tags">
+						<span class="tag">#python</span>
+						<span class="tag">#regex</span>
+						<span class="tag">#mips</span>
+					</div>
 				</div>
 				<div>
 					<p class="description">
@@ -326,15 +399,17 @@
 					</p>
 				</div>
 				<div>
-					<div style="width: 3%"><i class="nf nf-custom-c"></i></div>
-					<h4>&quot;Moon OS&quot; — Operating System</h4>
-					<span class="tag">#c</span>
-					<span class="tag">#x86_64</span>
-					<span class="tag">#shell</span>
-					<span class="tag">#memory allocator</span>
-					<span class="tag">#ahci</span>
-					<span class="tag">#qemu</span>
+					<h4>&quot;<a href="https://github.com/nbbeeken/moon">Moon OS</a>&quot; — Operating System</h4>
+					<span></span>
 					<time>Aug '17 - Dec '17</time>
+					<div class="tags">
+						<span class="tag">#c</span>
+						<span class="tag">#x86_64</span>
+						<span class="tag">#shell</span>
+						<span class="tag">#memory allocator</span>
+						<span class="tag">#ahci</span>
+						<span class="tag">#qemu</span>
+					</div>
 				</div>
 				<div>
 					<p class="description">
