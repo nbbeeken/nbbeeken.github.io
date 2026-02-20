@@ -1,3 +1,14 @@
+@view-transition {
+	navigation: auto;
+}
+
+#post-title-async-stack { view-transition-name: post-title-async-stack; }
+#post-title-dashmips    { view-transition-name: post-title-dashmips; }
+#post-title-c-koans     { view-transition-name: post-title-c-koans; }
+#post-title-moon        { view-transition-name: post-title-moon; }
+#post-title-wolfie-ball { view-transition-name: post-title-wolfie-ball; }
+#post-title-nfc-cards   { view-transition-name: post-title-nfc-cards; }
+
 /* @font-face {
 	font-family: 'SpaceMono Nerd Font';
 	src: url('./fonts/SpaceMonoRegular.woff2') format('woff2');
@@ -122,6 +133,17 @@ a {
 	color: var(--primary-color);
 	text-decoration: none;
 	font-style: italic;
+}
+
+.post-title {
+	font-family: var(--header-font);
+	color: var(--primary-color);
+	text-decoration: underline double;
+}
+
+.post-preview h2 a {
+	font-style: normal;
+	text-decoration: underline double;
 }
 
 .post-preview {
