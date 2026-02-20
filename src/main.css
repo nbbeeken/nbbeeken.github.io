@@ -146,8 +146,15 @@ a {
 	text-decoration: underline double;
 }
 
+.post-preview h2 a::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}
+
 .post-preview {
 	/* Add shadows to create the "card" effect */
+	position: relative;
 	box-shadow: 0 4px 8px 0 var(--shadow-color);
 	transition: 0.3s;
 	padding: 2px 16px;
