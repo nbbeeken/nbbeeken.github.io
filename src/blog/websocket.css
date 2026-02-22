@@ -1,0 +1,702 @@
+/* =============================================================
+   WebSocket Protocol — scroll-driven animation styles
+   Requires a browser with animation-timeline / view() support.
+   ============================================================= */
+
+/* --- Field colour palette ------------------------------------ */
+:root {
+	--ws-color-fin:          oklch(55% 0.17 250);
+	--ws-color-rsv:          oklch(50% 0.14 290);
+	--ws-color-opcode:       oklch(45% 0.16 155);
+	--ws-color-mask-bit:     oklch(55% 0.20 35);
+	--ws-color-payload-len:  oklch(55% 0.18 85);
+	--ws-color-ext-payload:  oklch(52% 0.15 65);
+	--ws-color-masking-key:  oklch(50% 0.16 10);
+	--ws-color-payload-data: oklch(48% 0.12 200);
+
+	--ws-grid-border:        color-mix(in oklch, var(--font-color) 25%, transparent);
+	--ws-grid-border-heavy:  color-mix(in oklch, var(--font-color) 55%, transparent);
+	--ws-bit-line:           color-mix(in oklch, var(--font-color) 10%, transparent);
+}
+
+[data-theme='dark'] {
+	--ws-bit-line:           color-mix(in oklch, var(--font-color) 15%, transparent);
+	--ws-color-fin:          oklch(72% 0.15 250);
+	--ws-color-rsv:          oklch(68% 0.12 290);
+	--ws-color-opcode:       oklch(70% 0.14 155);
+	--ws-color-mask-bit:     oklch(72% 0.18 35);
+	--ws-color-payload-len:  oklch(75% 0.17 85);
+	--ws-color-ext-payload:  oklch(72% 0.14 65);
+	--ws-color-masking-key:  oklch(70% 0.15 10);
+	--ws-color-payload-data: oklch(68% 0.11 200);
+}
+
+/* --- Page structure ------------------------------------------ */
+.ws-post {
+	max-width: 50rem;
+	margin: auto;
+	padding: 0 2rem;
+}
+
+/* The scrolly section breaks out to full viewport width */
+.scrolly {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	padding: 0 2rem;
+	box-sizing: border-box;
+
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+	align-items: start;
+
+	/* Declare scope so step view-timelines are reachable by diagram siblings */
+	timeline-scope:
+		--step-box,
+		--step-grid,
+		--step-fin,
+		--step-rsv,
+		--step-opcode,
+		--step-mask-bit,
+		--step-payload-len,
+		--step-payload-branch,
+		--step-ext-payload,
+		--step-masking-key,
+		--step-payload-data;
+}
+
+.diagram-panel {
+	position: sticky;
+	top: 3rem;
+	align-self: start;
+	padding: 2rem 0;
+}
+
+.steps-panel {
+	padding: 2rem 0;
+}
+
+/* --- Step sections — each registers a view-timeline ---------- */
+.step {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 2rem 0;
+}
+
+/* --- Step navigation arrows ---------------------------------- */
+.step-nav {
+	display: flex;
+	justify-content: center;
+	padding-top: 2rem;
+}
+
+.step-nav-btn {
+	background: none;
+	border: 1px solid currentColor;
+	border-radius: 50%;
+	color: inherit;
+	cursor: pointer;
+	opacity: 0.35;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: opacity 0.2s;
+}
+
+.step-nav-btn:hover,
+.step-nav-btn:focus-visible {
+	opacity: 0.85;
+}
+
+.step-nav-btn svg {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.step[data-step='box']            { view-timeline-name: --step-box; }
+.step[data-step='grid']           { view-timeline-name: --step-grid; }
+.step[data-step='fin']            { view-timeline-name: --step-fin; }
+.step[data-step='rsv']            { view-timeline-name: --step-rsv; }
+.step[data-step='opcode']         { view-timeline-name: --step-opcode; }
+.step[data-step='mask-bit']       { view-timeline-name: --step-mask-bit; }
+.step[data-step='payload-len']    { view-timeline-name: --step-payload-len; }
+.step[data-step='payload-branch'] { view-timeline-name: --step-payload-branch; }
+.step[data-step='ext-payload']    { view-timeline-name: --step-ext-payload; }
+.step[data-step='masking-key']    { view-timeline-name: --step-masking-key; }
+.step[data-step='payload-data']   { view-timeline-name: --step-payload-data; }
+
+/* --- The frame diagram --------------------------------------- */
+.ws-frame {
+	display: grid;
+	grid-template-columns: repeat(32, 1fr);
+	/* Row 1: bit header | Row 2: first data row | Row 3: ext-payload (collapsed)
+	   Row 4: masking-key | Row 5: payload-data */
+	grid-template-rows: auto 3.5rem 0px 3.5rem 3.5rem;
+	overflow: hidden;
+	position: relative; /* for ::after bit-line overlay */
+
+	border: 2px solid var(--font-color);
+	border-radius: 3px;
+	font-family: monospace;
+	font-size: clamp(0.4rem, 0.9vw, 0.6rem);
+
+	/* Two animations on different timelines: appear + expand ext-payload row */
+	animation-name: ws-frame-appear, ws-expand-ext-row;
+	animation-fill-mode: both, both;
+	animation-timing-function: ease-out, linear;
+	animation-timeline: --step-box, --step-ext-payload;
+	animation-range:
+		entry 0%  contain 60%,
+		entry 0%  contain 60%;
+}
+
+@keyframes ws-frame-appear {
+	from { opacity: 0; transform: scale(0.96); }
+	to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ws-expand-ext-row {
+	from { grid-template-rows: auto 3.5rem 0px   3.5rem 3.5rem; }
+	to   { grid-template-rows: auto 3.5rem 3.5rem 3.5rem 3.5rem; }
+}
+
+/* Thin 1px vertical lines at every bit position (1/32 of frame width).
+   Uses background tiling on a positioned overlay so it floats above field
+   backgrounds without affecting grid layout or pointer events. */
+.ws-frame::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 2;
+	background-image: linear-gradient(
+		to right,
+		var(--ws-bit-line) 1px,
+		transparent 1px
+	);
+	background-size: calc(100% / 32) 100%;
+	background-repeat: repeat-x;
+	opacity: 0;
+	animation-name: ws-show;
+	animation-timing-function: linear;
+	animation-fill-mode: both;
+	animation-timeline: --step-grid;
+	animation-range: entry 10% contain 60%;
+}
+
+/* --- Bit-number header row ----------------------------------- */
+.bit-header {
+	grid-column: 1 / -1;
+	grid-row: 1;
+	display: grid;
+	grid-template-columns: subgrid;
+
+	animation-name: ws-show;
+	animation-fill-mode: both;
+	animation-timing-function: linear;
+	animation-timeline: --step-grid;
+	animation-range: entry 10% contain 60%;
+}
+
+.bit-number {
+	text-align: center;
+	padding: 3px 0 2px;
+	border-right: 1px solid var(--ws-grid-border);
+	border-bottom: 2px solid var(--ws-grid-border-heavy);
+	color: var(--font-color);
+	opacity: 0.6;
+	user-select: none;
+}
+
+.bit-number.byte-start {
+	border-left: 2px solid var(--ws-grid-border-heavy);
+	opacity: 1;
+	font-weight: bold;
+}
+
+/* --- Field cells --------------------------------------------- */
+/*
+  Each field type carries two animations with independent timelines:
+    1. ws-show-borders — tied to --step-grid  (border-color transparent → visible)
+    2. ws-highlight-* — tied to its own step (background-color → field colour)
+
+  Labels animate on the same step timeline as their field, slightly delayed.
+*/
+.field {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	overflow: hidden;
+	min-height: 0; /* allows grid row to collapse to 0px */
+	cursor: default;
+	box-sizing: border-box;
+	border: 1px solid transparent; /* animated by ws-show-borders */
+}
+
+/* Heavier left border at byte boundaries (no !important — let animation control color) */
+.field.byte-boundary {
+	border-left-width: 2px;
+}
+
+/* Full-row fields get internal byte dividers via an absolutely-positioned
+   ::before overlay so the dividers can be animated independently of the
+   cell's background-color (field highlight). */
+.field.full-row {
+	position: relative;
+}
+
+.field.full-row::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background-image: linear-gradient(
+		to right,
+		transparent                      calc(25% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(25% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(25% + 0.5px),
+		transparent                      calc(25% + 0.5px),
+		transparent                      calc(50% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(50% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(50% + 0.5px),
+		transparent                      calc(50% + 0.5px),
+		transparent                      calc(75% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(75% - 0.5px),
+		var(--ws-grid-border-heavy)      calc(75% + 0.5px),
+		transparent                      calc(75% + 0.5px)
+	);
+	opacity: 0;
+	animation-name: ws-show;
+	animation-timing-function: linear;
+	animation-fill-mode: both;
+	animation-timeline: --step-grid;
+	animation-range: entry 10% contain 60%;
+}
+
+.field-label {
+	padding: 0.15em 0.25em;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	line-height: 1.2;
+	font-size: 0.9em;
+	color: var(--font-color);
+	mix-blend-mode: multiply;
+	text-align: center;
+
+	/* All labels appear together when the grid is revealed — no per-field
+	   label animation needed; background color does the signalling instead. */
+	opacity: 0;
+	animation-name: ws-show;
+	animation-timing-function: linear;
+	animation-fill-mode: both;
+	animation-timeline: --step-grid;
+	animation-range: entry 20% contain 70%;
+}
+
+[data-theme='dark'] .field-label {
+	mix-blend-mode: screen;
+}
+
+/* Single-bit cells (FIN, RSV1-3, MASK): stack characters vertically so they
+   fit the narrow column width without ellipsis. */
+.field.single-bit .field-label {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	/* Override the horizontal line-clamp with vertical overflow handling */
+	display: block;
+	-webkit-line-clamp: unset;
+	-webkit-box-orient: unset;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	letter-spacing: -0.05em;
+	padding: 0.1em 0;
+}
+
+/* --- Field info bar — updated by JS on field hover ----------- */
+.field-info {
+	margin-top: 0.5rem;
+	padding: 0.3rem 0;
+	border-top: 1px solid var(--ws-grid-border);
+	font-family: monospace;
+	font-size: 0.78rem;
+	color: var(--font-color);
+	min-height: 1.6em;
+	opacity: 0;
+	transition: opacity 0.15s;
+}
+
+.field-info-active {
+	opacity: 1;
+}
+
+/* --- Shared keyframes ---------------------------------------- */
+@keyframes ws-show {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+@keyframes ws-show-borders {
+	from { border-color: transparent; }
+	to   { border-color: var(--ws-grid-border); }
+}
+
+/* For fields that sit at byte boundaries — left border gets the heavy color */
+@keyframes ws-show-borders-left-heavy {
+	from { border-color: transparent; }
+	to   { border-color: var(--ws-grid-border); border-left-color: var(--ws-grid-border-heavy); }
+}
+
+/* Show-and-hide: fades in quickly, holds, then fades out.
+   Used for overlay elements that should disappear after their step passes.
+   Requires animation-fill-mode: none and default opacity: 0 on the element. */
+@keyframes ws-appear-hold-fade {
+	0%         { opacity: 0; }
+	15%, 85%   { opacity: 1; }
+	100%       { opacity: 0; }
+}
+
+/* --- Field highlight animations ----------------------------- */
+/*
+  Each field type carries two animations with independent timelines:
+    1. ws-show-borders — tied to --step-grid  (border-color transparent → visible)
+    2. ws-highlight-* — tied to its own step (background-color → field colour)
+
+  Labels are revealed by a single shared --step-grid animation (see above).
+*/
+
+.field-fin {
+	animation-name: ws-show-borders, ws-highlight-fin;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-fin;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-fin {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-fin); }
+}
+
+.field-rsv {
+	animation-name: ws-show-borders, ws-highlight-rsv;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-rsv;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-rsv {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-rsv); }
+}
+
+.field-opcode {
+	animation-name: ws-show-borders, ws-highlight-opcode;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-opcode;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-opcode {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-opcode); }
+}
+
+.field-mask-bit {
+	animation-name: ws-show-borders-left-heavy, ws-highlight-mask-bit;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-mask-bit;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-mask-bit {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-mask-bit); }
+}
+
+.field-payload-len {
+	animation-name: ws-show-borders, ws-highlight-payload-len;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-payload-len;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-payload-len {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-payload-len); }
+}
+
+.field-ext-payload {
+	animation-name: ws-show-borders-left-heavy, ws-highlight-ext-payload;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-ext-payload;
+	animation-range: entry 10% contain 60%, entry 0% contain 60%;
+}
+@keyframes ws-highlight-ext-payload {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-ext-payload); }
+}
+
+.field-masking-key {
+	animation-name: ws-show-borders, ws-highlight-masking-key;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-masking-key;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-masking-key {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-masking-key); }
+}
+
+.field-payload-data {
+	animation-name: ws-show-borders, ws-highlight-payload-data;
+	animation-fill-mode: both, both;
+	animation-timing-function: linear, linear;
+	animation-timeline: --step-grid, --step-payload-data;
+	animation-range: entry 10% contain 60%, entry 10% contain 60%;
+}
+@keyframes ws-highlight-payload-data {
+	from { background-color: transparent; }
+	to   { background-color: var(--ws-color-payload-data); }
+}
+
+/* ============================================================
+   Overlay panels — branch cases and masking direction
+   These use fill: none so they fade away after their step exits.
+   Default opacity: 0 means they're invisible outside their range.
+   ============================================================ */
+
+/* --- Shared overlay structure ------------------------------- */
+.branch-cases,
+.masking-direction {
+	opacity: 0; /* hidden outside their animation range */
+	margin-top: 0.75rem;
+}
+
+.branch-cases {
+	animation-name: ws-appear-hold-fade;
+	animation-timing-function: linear;
+	animation-fill-mode: none;
+	animation-timeline: --step-payload-branch;
+	animation-range-start: entry 0%;
+	animation-range-end: exit 100%;
+}
+
+.masking-direction {
+	animation-name: ws-appear-hold-fade;
+	animation-timing-function: linear;
+	animation-fill-mode: none;
+	animation-timeline: --step-mask-bit;
+	animation-range-start: entry 0%;
+	animation-range-end: exit 100%;
+}
+
+/* --- Branch cases ------------------------------------------- */
+.branch-case {
+	margin-bottom: 0.75rem;
+}
+
+.branch-case-header {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	margin-bottom: 0.25rem;
+}
+
+.branch-case-label {
+	font-family: monospace;
+	font-weight: bold;
+	font-size: 0.82rem;
+	color: var(--font-color);
+}
+
+.branch-case-note {
+	font-size: 0.72rem;
+	color: var(--font-color);
+	opacity: 0.65;
+}
+
+.branch-case-row {
+	display: flex;
+	height: 2.2rem;
+	border: 1px solid var(--ws-grid-border-heavy);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.branch-seg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: clamp(0.48rem, 0.9vw, 0.62rem);
+	font-family: monospace;
+	border-right: 1px solid var(--ws-grid-border-heavy);
+	overflow: hidden;
+	padding: 0 0.15em;
+}
+
+.branch-seg > span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--font-color);
+	mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] .branch-seg > span {
+	mix-blend-mode: screen;
+}
+
+.branch-seg:last-child { border-right: none; }
+
+.branch-seg-ext-payload  { background-color: var(--ws-color-ext-payload); }
+.branch-seg-masking-key  { background-color: var(--ws-color-masking-key); }
+.branch-seg-payload-data { background-color: var(--ws-color-payload-data); }
+
+/* --- Masking direction -------------------------------------- */
+.mask-dir {
+	margin-bottom: 0.75rem;
+}
+
+.mask-dir-header {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	margin-bottom: 0.25rem;
+}
+
+.mask-dir-label {
+	font-family: monospace;
+	font-weight: bold;
+	font-size: 0.82rem;
+	color: var(--font-color);
+}
+
+.mask-dir-note {
+	font-size: 0.72rem;
+	color: var(--font-color);
+	opacity: 0.65;
+}
+
+.mask-dir-row {
+	display: flex;
+	height: 2.2rem;
+	border: 1px solid var(--ws-grid-border-heavy);
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.mask-seg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: clamp(0.48rem, 0.9vw, 0.62rem);
+	font-family: monospace;
+	border-right: 1px solid var(--ws-grid-border-heavy);
+	overflow: hidden;
+	white-space: nowrap;
+	padding: 0 0.15em;
+	text-overflow: ellipsis;
+	color: var(--font-color);
+	mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] .mask-seg {
+	mix-blend-mode: screen;
+}
+
+.mask-seg:last-child { border-right: none; }
+
+.mask-seg-mask-bit      { background-color: var(--ws-color-mask-bit); }
+.mask-seg-mask-bit-zero {
+	/* Greyed out — MASK is unset in server frames */
+	background-color: color-mix(in oklch, var(--ws-color-mask-bit) 25%, transparent);
+	opacity: 0.6;
+}
+.mask-seg-masking-key   { background-color: var(--ws-color-masking-key); }
+.mask-seg-payload-data  { background-color: var(--ws-color-payload-data); }
+
+/* --- Opcode table ------------------------------------------- */
+.opcode-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.85rem;
+	margin: 1em 0;
+}
+
+.opcode-table td,
+.opcode-table th {
+	padding: 0.4em 0.6em;
+	border: 1px solid var(--ws-grid-border);
+}
+
+.opcode-table td:first-child {
+	font-family: monospace;
+	text-align: center;
+	color: var(--ws-color-opcode);
+	font-weight: bold;
+}
+
+/* --- HTTP exchange display ---------------------------------- */
+.http-exchange {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	margin: 1.5rem 0;
+}
+
+.http-exchange figure {
+	margin: 0;
+}
+
+.http-exchange figcaption {
+	font-size: 0.8rem;
+	color: var(--font-color);
+	opacity: 0.7;
+	margin-bottom: 0.4em;
+}
+
+.http-exchange pre {
+	margin: 0;
+	padding: 0.75rem;
+	border: 1px solid var(--ws-grid-border);
+	border-radius: 3px;
+	font-size: 0.75rem;
+	overflow-x: auto;
+	line-height: 1.6;
+}
+
+/* --- Mobile ------------------------------------------------- */
+@media (max-width: 700px) {
+	.scrolly {
+		grid-template-columns: 1fr;
+		gap: 0;
+		padding: 0 1rem;
+	}
+
+	.diagram-panel {
+		position: static;
+		padding: 1rem 0;
+	}
+
+	.step {
+		min-height: 70vh;
+	}
+
+	.http-exchange {
+		grid-template-columns: 1fr;
+	}
+
+	.ws-frame {
+		font-size: 0.36rem;
+	}
+}

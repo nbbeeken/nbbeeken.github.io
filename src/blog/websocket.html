@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>WebSocket Protocol</title>
+		<link type="image/png" href="../images/favicon.png" rel="shortcut icon" />
+		<link type="image/png" href="../images/favicon.png" rel="apple-touch-icon" />
+		<link type="text/css" href="../main.css" rel="stylesheet" />
+		<link type="text/css" href="./websocket.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div>
+			<input type="checkbox" id="theme-switch" />
+			<label for="theme-switch"></label>
+		</div>
+
+		<article class="ws-post">
+			<h1 class="post-title" id="post-title-web-socket">WebSocket Protocol</h1>
+
+			<!-- ── Intro ──────────────────────────────────────────────── -->
+			<section>
+				<p>
+					HTTP is a request-response protocol. The client speaks, the server answers, and the
+					connection closes. This works well for fetching documents, but it is a poor fit for
+					anything that needs the server to push data unprompted — stock tickers, chat, live
+					dashboards, collaborative editing.
+				</p>
+				<p>
+					Before WebSocket, developers worked around HTTP's limitations with polling (asking the
+					server "anything new?" on a timer), long-polling (holding a request open until the server
+					has something to say), and chunked transfer tricks. All of these are awkward. WebSocket,
+					standardised in
+					<a href="https://www.rfc-editor.org/rfc/rfc6455">RFC 6455</a>
+					(2011), adds a proper full-duplex channel to the web platform.
+				</p>
+			</section>
+
+			<!-- ── Handshake ───────────────────────────────────────────── -->
+			<section>
+				<h2>The HTTP/1.1 handshake</h2>
+				<p>
+					A WebSocket connection begins as a plain HTTP/1.1 request. The client asks the server to
+					<em>upgrade</em> the connection, and if the server agrees, they switch protocols on the
+					same TCP socket. No new connection is needed.
+				</p>
+				<div class="http-exchange">
+					<figure>
+						<figcaption>Client request</figcaption>
+						<pre><code>GET /chat HTTP/1.1
+Host: example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Sec-WebSocket-Version: 13</code></pre>
+					</figure>
+					<figure>
+						<figcaption>Server response</figcaption>
+						<pre><code>HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</code></pre>
+					</figure>
+				</div>
+				<p>
+					The <code>Sec-WebSocket-Key</code> is a random 16-byte value the client sends as a
+					Base64 string. The server proves it understands the WebSocket protocol — rather than just
+					forwarding the request — by appending the magic GUID
+					</p>
+					<p><code>258EAFA5-E914-47DA-95CA-C5AB0DC85B11</code></p>
+					<p>taking the SHA-1 hash, and returning
+					the Base64 result as <code>Sec-WebSocket-Accept</code>. After the
+					<code>101 Switching Protocols</code> response, the HTTP layer is discarded and both sides
+					speak the WebSocket framing protocol directly.
+				</p>
+			</section>
+
+			<section>
+				<h2>The HTTP/2 handshake</h2>
+				<p>
+					HTTP/2 is a binary, multiplexed protocol — multiple request/response streams share a single
+					TCP connection concurrently. The HTTP/1.1 upgrade mechanism does not translate: HTTP/2
+					forbids <code>Connection</code> and <code>Upgrade</code> headers, and the
+					<code>101 Switching Protocols</code> status code does not exist in HTTP/2.
+				</p>
+				<p>
+					<a href="https://www.rfc-editor.org/rfc/rfc8441">RFC 8441</a> (2018) solves this with an
+					extended <code>CONNECT</code> method. The client adds a <code>:protocol</code>
+					pseudo-header to signal the desired application protocol, leaving the existing HTTP/2
+					stream open rather than hijacking the underlying TCP connection.
+				</p>
+				<p>
+					Before the client can use this, the server must opt in by sending
+					<code>SETTINGS_ENABLE_CONNECT_PROTOCOL = 1</code> in its HTTP/2 SETTINGS frame. Once
+					enabled, the handshake looks like this:
+				</p>
+				<div class="http-exchange">
+					<figure>
+						<figcaption>Client HEADERS frame</figcaption>
+						<pre><code>:method = CONNECT
+:protocol = websocket
+:scheme = https
+:path = /chat
+:authority = example.com
+sec-websocket-version = 13</code></pre>
+					</figure>
+					<figure>
+						<figcaption>Server HEADERS frame</figcaption>
+						<pre><code>:status = 200</code></pre>
+					</figure>
+				</div>
+				<p>
+					A <code>200</code> response establishes the WebSocket. The HTTP/2 stream is then treated
+					as if it were a TCP connection — WebSocket frames flow through it directly.
+					<code>Sec-WebSocket-Key</code> and <code>Sec-WebSocket-Accept</code> are dropped; the
+					<code>:protocol</code> pseudo-header takes over their role. However, these headers and the
+					handling of them may still need to be performed if the HTTP/2 connection is actually an HTTP/1.1
+					connection that was upgraded by a loadbalancer before reaching your app server.
+				</p>
+				<h3>Benefits over HTTP/1.1</h3>
+				<ul style="list-style: disc; padding-left: 1.5em;">
+					<li>
+						<strong>Multiplexing.</strong> Multiple WebSocket streams share one TCP connection
+						alongside regular HTTP/2 traffic. No extra TCP handshake per WebSocket.
+					</li>
+					<li>
+						<strong>Stream-level flow control and priorities.</strong> HTTP/2 stream priorities and
+						RST_STREAM cancellation apply directly to each WebSocket stream.
+					</li>
+					<li>
+						<strong>No cache-poisoning risk.</strong> HTTP/2 is binary end-to-end. Intermediaries
+						that speak HTTP/2 parse the binary framing correctly and cannot be tricked by crafted
+						payload bytes the way HTTP/1.1 text proxies can. Client-to-server masking remains
+						required by RFC 6455 §10.3, but its original defense against proxy cache poisoning is
+						irrelevant over a properly-terminating HTTP/2 connection.
+					</li>
+					<li>
+						<strong>No connection hijacking.</strong> JavaScript cannot issue a
+						<code>CONNECT</code> request through <code>XMLHttpRequest</code> or
+						<code>fetch</code>, and pseudo-headers are connection-stack-internal — a web page
+						cannot forge them to open a cross-site WebSocket tunnel.
+					</li>
+				</ul>
+			</section>
+
+			<!-- ── Frame intro ─────────────────────────────────────────── -->
+			<section>
+				<h2>The frame format</h2>
+				<p>
+					Everything sent over a WebSocket connection — text messages, binary payloads, pings,
+					close signals — travels inside a <em>frame</em>. Frames are small: their header is just
+					two bytes in the common case. Scroll through the sections below to see each field of the
+					header reveal itself.
+				</p>
+			</section>
+		</article>
+
+		<!-- ── Scrollytelling ───────────────────────────────────────── -->
+		<div class="scrolly">
+			<!-- Sticky diagram (left column on desktop) -->
+			<div class="diagram-panel">
+				<figure
+					class="ws-frame"
+					id="ws-frame"
+					role="img"
+					aria-label="WebSocket frame header diagram, fields highlighted as you scroll"
+				></figure>
+				<!-- Payload length branching overlay — built + shown by websocket.ts -->
+				<div class="branch-cases" id="branch-cases"></div>
+				<!-- Masking direction overlay — built + shown by websocket.ts -->
+				<div class="masking-direction" id="masking-direction"></div>
+				<!-- Hover info bar — updated by websocket.ts on field mouseenter -->
+				<div class="field-info" id="field-info" aria-live="polite"></div>
+			</div>
+
+			<!-- Prose steps (right column on desktop) -->
+			<div class="steps-panel">
+
+				<!-- step: box -->
+				<section class="step" data-step="box">
+					<h3>A frame</h3>
+					<p>
+						Once the handshake completes, every message travels in one or more
+						<em>frames</em>. A frame is the atomic unit of the wire format: a short structured
+						header followed by arbitrary payload bytes.
+					</p>
+					<p>
+						The diagram to the left is that header. It starts here as an empty rectangle — by the
+						time you finish scrolling, every field will be labelled and coloured.
+					</p>
+				</section>
+
+				<!-- step: grid -->
+				<section class="step" data-step="grid">
+					<h3>32 bits per row</h3>
+					<p>
+						Network protocol diagrams conventionally show fields in 32-bit (4-byte) rows, reading
+						left-to-right with the most-significant bit on the left — bit 0. The four columns mark
+						byte boundaries.
+					</p>
+					<p>
+						This layout comes from the way protocol engineers think about memory: each row is one
+						machine word, and the visual grouping makes it easy to see which fields cross byte
+						boundaries and how much space each one occupies.
+					</p>
+				</section>
+
+				<!-- step: fin -->
+				<section class="step" data-step="fin">
+					<h3>FIN — final fragment</h3>
+					<p>
+						The first bit is <strong>FIN</strong>. It answers the question: is this the last frame
+						of the message?
+					</p>
+					<p>
+						WebSocket allows a single logical message to be split across multiple
+						<em>continuation frames</em>. Intermediate frames have FIN=0. The final (or only)
+						frame sets FIN=1. Single-shot messages — the common case — always have FIN=1.
+					</p>
+					<p>
+						Fragmentation lets a sender begin streaming a message whose total length is not yet
+						known, interleaving control frames (like pings) between fragments.
+					</p>
+				</section>
+
+				<!-- step: rsv -->
+				<section class="step" data-step="rsv">
+					<h3>RSV1 · RSV2 · RSV3</h3>
+					<p>
+						Three <strong>reserved bits</strong> follow. The spec says they must be 0 unless a
+						WebSocket <em>extension</em> negotiated during the handshake has assigned them a
+						meaning.
+					</p>
+					<p>
+						The most widely deployed extension is
+						<code>permessage-deflate</code>: when both endpoints agree to it in their handshake
+						headers, RSV1=1 signals that the payload has been deflate-compressed and must be
+						inflated before use. The other two reserved bits remain available for future
+						extensions.
+					</p>
+				</section>
+
+				<!-- step: opcode -->
+				<section class="step" data-step="opcode">
+					<h3>Opcode — frame type</h3>
+					<p>
+						The 4-bit <strong>opcode</strong> identifies what kind of frame this is. There are two
+						categories: <em>data frames</em> carry application payload; <em>control frames</em>
+						manage the connection itself.
+					</p>
+					<table class="opcode-table">
+						<thead>
+							<tr>
+								<th>Value</th>
+								<th>Meaning</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><td>0x0</td><td>Continuation frame</td></tr>
+							<tr><td>0x1</td><td>Text frame (UTF-8)</td></tr>
+							<tr><td>0x2</td><td>Binary frame</td></tr>
+							<tr><td>0x8</td><td>Connection close</td></tr>
+							<tr><td>0x9</td><td>Ping</td></tr>
+							<tr><td>0xA</td><td>Pong</td></tr>
+						</tbody>
+					</table>
+					<p>
+						Values 0x3–0x7 and 0xB–0xF are reserved for future data and control frames
+						respectively. A receiver that encounters an unknown opcode must close the connection.
+					</p>
+				</section>
+
+				<!-- step: mask-bit -->
+				<section class="step" data-step="mask-bit">
+					<h3>MASK — payload masking</h3>
+					<p>
+						The <strong>MASK</strong> bit is asymmetric — its required value depends on which
+						side is sending. The diagram shows both cases.
+					</p>
+					<p>
+						<strong>Client → server:</strong> MASK must be 1. The masking key field is present,
+						and the payload is XOR-masked with it.
+					</p>
+					<p>
+						<strong>Server → client:</strong> MASK must be 0. There is no masking key field, and
+						the payload bytes are sent as-is. A client that receives a masked server frame must
+						close the connection.
+					</p>
+					<p>
+						The reason masking is mandatory from clients is defense against cache-poisoning
+						attacks: a malicious web page could otherwise craft WebSocket traffic that looks like
+						valid HTTP responses to an intervening proxy. Masking with a random per-frame key
+						makes the payload look like noise to any intermediary.
+					</p>
+				</section>
+
+				<!-- step: payload-len -->
+				<section class="step" data-step="payload-len">
+					<h3>Payload length</h3>
+					<p>
+						The 7-bit <strong>payload length</strong> field encodes size in three ranges:
+					</p>
+					<ul style="list-style: disc; padding-left: 1.5em;">
+						<li><strong>0–125</strong> — the actual byte count of the payload</li>
+						<li><strong>126</strong> — read the next 16 bits for the real length (up to 65,535 bytes)</li>
+						<li><strong>127</strong> — read the next 64 bits for the real length (up to 2<sup>63</sup> bytes)</li>
+					</ul>
+					<p>
+						This variable-length encoding keeps the common case (small messages) minimal: most
+						frames need only the 7-bit field. The extended fields only appear when the payload
+						overflows the smaller encoding.
+					</p>
+				</section>
+
+				<!-- step: payload-branch -->
+				<section class="step" data-step="payload-branch">
+					<h3>Three branches</h3>
+					<p>
+						The 7-bit field creates three distinct frame layouts depending on its value. The
+						diagram on the left shows what comes immediately after the first two bytes for each
+						case.
+					</p>
+					<p>
+						With <strong>len 0–125</strong> the header ends after two bytes (or ten, including the
+						masking key). With <strong>len = 126</strong> two extra bytes carry the real length.
+						With <strong>len = 127</strong> eight extra bytes carry it. In all cases the masking
+						key and payload follow in the same order — the only thing that changes is how many
+						bytes the length occupies.
+					</p>
+					<p>
+						The value 126 was chosen as the break-point because 125 is the maximum payload size
+						for control frames (close, ping, pong), which are never fragmented. That keeps the
+						common control-frame path at the 7-bit minimum.
+					</p>
+				</section>
+
+				<!-- step: ext-payload -->
+				<section class="step" data-step="ext-payload">
+					<h3>Extended payload length</h3>
+					<p>
+						Back to the full diagram: when payload length is 126 or 127, the
+						<strong>extended length field</strong> expands the header. The new row that just
+						appeared carries the 32-bit continuation of the 64-bit extended length.
+					</p>
+					<p>
+						In practice, WebSocket frames are kept small. Sending one enormous frame is wasteful
+						because neither side can interleave other traffic until it completes. Implementations
+						typically chunk large payloads into fragments of a few kilobytes so control frames
+						(like pings) are not starved.
+					</p>
+				</section>
+
+				<!-- step: masking-key -->
+				<section class="step" data-step="masking-key">
+					<h3>Masking key</h3>
+					<p>
+						When MASK is set, a 32-bit <strong>masking key</strong> immediately precedes the
+						payload. The key is chosen randomly for every frame — never reuse it.
+					</p>
+					<p>
+						To apply or remove masking, XOR each payload byte with the corresponding key byte,
+						cycling through the four-byte key:
+					</p>
+					<pre><code>for (let i = 0; i &lt; payload.length; i++) {
+    payload[i] ^= key[i % 4];
+}</code></pre>
+					<p>
+						The same operation both applies and removes the mask, so the receiver runs the same
+						loop. Note that masking provides zero cryptographic security — its sole purpose is
+						preventing proxy cache poisoning.
+					</p>
+				</section>
+
+				<!-- step: payload-data -->
+				<section class="step" data-step="payload-data">
+					<h3>Payload data</h3>
+					<p>
+						Finally, the <strong>payload</strong>. What it contains depends on the opcode:
+					</p>
+					<ul style="list-style: disc; padding-left: 1.5em;">
+						<li>Continuation frames (0x0) carry subsequent fragments of a fragmented message. The first fragment uses opcode 0x1 or 0x2; every following fragment uses 0x0 to signal "more of the same message". The receiver reassembles them in order.</li>
+						<li>Text frames (0x1) must carry valid UTF-8. The receiver must close the connection if it receives malformed UTF-8.</li>
+						<li>Binary frames (0x2) carry arbitrary bytes — your protocol defines the structure.</li>
+						<li>Close frames (0x8) carry an optional 2-byte (16-bit big endian) status code followed by a UTF-8 reason string.</li>
+						<li>Ping (0x9) and Pong (0xA) payloads are limited to 125 bytes and must be echoed verbatim in the corresponding Pong.</li>
+					</ul>
+					<p>
+						That's the complete frame header. Two bytes in the common case; a handful more when
+						extended length or masking key fields are present.
+					</p>
+				</section>
+
+			</div><!-- .steps-panel -->
+		</div><!-- .scrolly -->
+
+		<article class="ws-post">
+			<section>
+				<h2>Closing a connection</h2>
+				<p>
+					Either side can initiate a close by sending a Close frame (opcode 0x8). The other side
+					must respond with its own Close frame and then close the TCP connection. Status codes
+					mirror HTTP semantics: 1000 is a normal closure, 1001 means the endpoint is "going
+					away" (a server restarting, a browser navigating), 1002 is a protocol error.
+				</p>
+				<p>
+					The close handshake is graceful by design: both sides flush their send buffers before
+					tearing down the socket, so no data is lost on an orderly shutdown.
+				</p>
+			</section>
+		</article>
+
+		<script type="module" src="../theme.ts"></script>
+		<script type="module" src="./websocket.ts"></script>
+	</body>
+</html>
