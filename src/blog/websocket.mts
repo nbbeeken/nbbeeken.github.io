@@ -34,7 +34,7 @@ type MaskDir = {
 // RFC 6455 §5.2 — Base Framing Protocol
 const FRAME_FIELDS: readonly Field[] = [
 	{ name: 'fin',          label: 'FIN — final fragment bit',          shortLabel: 'FIN',  row: 1, startBit: 1,  endBit: 1  },
-	{ name: 'rsv',          label: 'RSV1 — reserved (extension use)',   shortLabel: 'R1',   row: 1, startBit: 2,  endBit: 2  },
+	{ name: 'rsv',          label: 'RSV1 — reserved (compression enabled)',   shortLabel: 'R1',   row: 1, startBit: 2,  endBit: 2  },
 	{ name: 'rsv',          label: 'RSV2 — reserved (extension use)',   shortLabel: 'R2',   row: 1, startBit: 3,  endBit: 3  },
 	{ name: 'rsv',          label: 'RSV3 — reserved (extension use)',   shortLabel: 'R3',   row: 1, startBit: 4,  endBit: 4  },
 	{ name: 'opcode',       label: 'opcode (4 bits)',                                       row: 1, startBit: 5,  endBit: 8  },
@@ -49,7 +49,7 @@ const FRAME_FIELDS: readonly Field[] = [
 // Three payload length cases — each row sums to 16 byte-units for consistent width
 const BRANCH_CASES: readonly BranchCase[] = [
 	{
-		label: 'len 0–125',
+		label: 'len 0-125',
 		note: 'Length fits in 7 bits — no extended field.',
 		fields: [
 			{ name: 'masking-key',  label: 'masking key (4 B)',  bytes: 4  },
