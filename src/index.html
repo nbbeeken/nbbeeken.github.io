@@ -7,6 +7,7 @@
 		<link type="image/png" href="./images/favicon.png" rel="shortcut icon" />
 		<link type="image/png" href="./images/favicon.png" rel="apple-touch-icon" />
 		<link type="text/css" href="./main.css" rel="stylesheet" />
+	<script>if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');</script>
 	</head>
 	<body>
 		<div>
@@ -27,7 +28,6 @@
 			</figure>
 			<div>
 				<a href="./resume.html" title="My resume" id="resume_link">See my resume</a>
-				<a href="./blog/websocket.html" title="Websocket">Websocket</a>
 			</div>
 			<article>
 				<h2>const neal = new Neal();</h2>
@@ -47,6 +47,17 @@
 				</p>
 				<h2>neal.listProjects();</h2>
 				<ul>
+					<li>
+						<div class="post-preview">
+							<h2 id="post-title-web-socket">
+								<a href="./blog/websocket.html" title="The WebSocket Protocol"
+									>The WebSocket Protocol</a
+								>
+							</h2>
+							<time>February 22, 2026</time>
+							<p>An animated deep dive into parsing the WebSocket Protocol.</p>
+						</div>
+					</li>
 					<li>
 						<div class="post-preview">
 							<h2 id="post-title-async-stack">
@@ -114,6 +125,6 @@
 			</article>
 		</main>
 	</body>
-	<script type="module" src="./theme.ts"></script>
-	<script type="module" src="./time.ts"></script>
+	<script type="module" src="./theme.mjs"></script>
+	<script type="module" src="./time.mjs"></script>
 </html>

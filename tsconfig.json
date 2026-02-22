@@ -1,12 +1,14 @@
 {
 	"compilerOptions": {
-		"allowArbitraryExtensions": true,
-		"checkJs": true,
 		"strict": true,
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
-		"lib": ["DOM", "ES2022.Error", "ESNext"]
+		"erasableSyntaxOnly": true,
+		"sourceMap": true,
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"noEmit": false
 	},
+	"include": ["src"],
 	"exclude": ["dist", "scripts"]
 }

@@ -1,4 +1,4 @@
-import { forElementBySelector, relativeDateDiff } from './utils';
+import { forElementBySelector, relativeDateDiff } from './utils.mjs';
 
 const rtf = new Intl.RelativeTimeFormat('en', {
 	localeMatcher: 'best fit',

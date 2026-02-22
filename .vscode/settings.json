@@ -23,5 +23,9 @@
 		"sharded",
 		"userspace",
 		"Wolfie"
-	]
+	],
+	"files.exclude": {
+		"**/*.mjs": true,
+		"**/*.mjs.map": true
+	}
 }

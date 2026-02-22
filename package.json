@@ -5,15 +5,17 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "parcel serve --https --host 0.0.0.0 src/index.html src/director.html",
-		"build": "parcel build --no-content-hash --no-optimize src/index.html src/director.html",
+		"build": "tsc",
+		"watch": "tsc --watch",
+		"serve": "node scripts/serve.mjs",
 		"fmt": "prettier --write .",
 		"lint": "node ./scripts/lint_html.mjs"
 	},
 	"devDependencies": {
-		"parcel": "^2.14.4",
-		"prettier": "^3.5.3",
-		"typescript": "^5.8.2",
-		"vnu-jar": "^24.10.17"
+		"@types/node": "^25.3.0",
+		"@types/vnu-jar": "^17.11.2",
+		"prettier": "^3.8.1",
+		"typescript": "^5.9.3",
+		"vnu-jar": "^26.2.20"
 	}
 }

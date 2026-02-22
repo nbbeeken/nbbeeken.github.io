@@ -6,3 +6,4 @@ package-lock.json
 dist/
 secrets/
 !secrets/.gitkeep
+src/**/*.mjs*

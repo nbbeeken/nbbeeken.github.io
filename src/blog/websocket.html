@@ -8,6 +8,7 @@
 		<link type="image/png" href="../images/favicon.png" rel="apple-touch-icon" />
 		<link type="text/css" href="../main.css" rel="stylesheet" />
 		<link type="text/css" href="./websocket.css" rel="stylesheet" />
+	<script>if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');</script>
 	</head>
 	<body>
 		<div>
@@ -409,7 +410,7 @@ sec-websocket-version = 13</code></pre>
 			</section>
 		</article>
 
-		<script type="module" src="../theme.ts"></script>
-		<script type="module" src="./websocket.ts"></script>
+		<script type="module" src="../theme.mjs"></script>
+		<script type="module" src="./websocket.mjs"></script>
 	</body>
 </html>

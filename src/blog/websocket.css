@@ -5,21 +5,6 @@
 
 /* --- Field colour palette ------------------------------------ */
 :root {
-	--ws-color-fin:          oklch(55% 0.17 250);
-	--ws-color-rsv:          oklch(50% 0.14 290);
-	--ws-color-opcode:       oklch(45% 0.16 155);
-	--ws-color-mask-bit:     oklch(55% 0.20 35);
-	--ws-color-payload-len:  oklch(55% 0.18 85);
-	--ws-color-ext-payload:  oklch(52% 0.15 65);
-	--ws-color-masking-key:  oklch(50% 0.16 10);
-	--ws-color-payload-data: oklch(48% 0.12 200);
-
-	--ws-grid-border:        color-mix(in oklch, var(--font-color) 25%, transparent);
-	--ws-grid-border-heavy:  color-mix(in oklch, var(--font-color) 55%, transparent);
-	--ws-bit-line:           color-mix(in oklch, var(--font-color) 10%, transparent);
-}
-
-[data-theme='dark'] {
 	--ws-bit-line:           color-mix(in oklch, var(--font-color) 15%, transparent);
 	--ws-color-fin:          oklch(72% 0.15 250);
 	--ws-color-rsv:          oklch(68% 0.12 290);
@@ -31,6 +16,32 @@
 	--ws-color-payload-data: oklch(68% 0.11 200);
 }
 
+[data-theme='light'] {
+	--ws-color-fin:          oklch(85% 0.17 250);
+	--ws-color-rsv:          oklch(80% 0.14 290);
+	--ws-color-opcode:       oklch(85% 0.16 155);
+	--ws-color-mask-bit:     oklch(85% 0.20 35);
+	--ws-color-payload-len:  oklch(85% 0.18 85);
+	--ws-color-ext-payload:  oklch(82% 0.15 65);
+	--ws-color-masking-key:  oklch(80% 0.16 10);
+	--ws-color-payload-data: oklch(84% 0.12 200);
+	--ws-grid-border:        color-mix(in oklch, var(--font-color) 25%, transparent);
+	--ws-grid-border-heavy:  color-mix(in oklch, var(--font-color) 55%, transparent);
+	--ws-bit-line:           color-mix(in oklch, var(--font-color) 10%, transparent);
+}
+
+[data-theme='light'] .field-label {
+	mix-blend-mode: normal;
+}
+
+[data-theme='light'] .branch-seg > span {
+	mix-blend-mode: normal;
+}
+
+[data-theme='light'] .mask-seg {
+	mix-blend-mode: normal;
+}
+
 /* --- Page structure ------------------------------------------ */
 .ws-post {
 	max-width: 50rem;
@@ -40,7 +51,7 @@
 
 /* The scrolly section breaks out to full viewport width */
 .scrolly {
-	width: 100vw;
+	width: 99vw;
 	margin-left: calc(50% - 50vw);
 	padding: 0 2rem;
 	box-sizing: border-box;
@@ -288,7 +299,7 @@
 	line-height: 1.2;
 	font-size: 0.9em;
 	color: var(--font-color);
-	mix-blend-mode: multiply;
+	mix-blend-mode: screen;
 	text-align: center;
 
 	/* All labels appear together when the grid is revealed — no per-field
@@ -299,10 +310,6 @@
 	animation-fill-mode: both;
 	animation-timeline: --step-grid;
 	animation-range: entry 20% contain 70%;
-}
-
-[data-theme='dark'] .field-label {
-	mix-blend-mode: screen;
 }
 
 /* Single-bit cells (FIN, RSV1-3, MASK): stack characters vertically so they
@@ -487,8 +494,7 @@
 	animation-timing-function: linear;
 	animation-fill-mode: none;
 	animation-timeline: --step-payload-branch;
-	animation-range-start: entry 0%;
-	animation-range-end: exit 100%;
+	animation-range: entry 0% exit 100%;
 }
 
 .masking-direction {
@@ -496,8 +502,7 @@
 	animation-timing-function: linear;
 	animation-fill-mode: none;
 	animation-timeline: --step-mask-bit;
-	animation-range-start: entry 0%;
-	animation-range-end: exit 100%;
+	animation-range: entry 0% exit 100%;
 }
 
 /* --- Branch cases ------------------------------------------- */
@@ -549,10 +554,6 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	color: var(--font-color);
-	mix-blend-mode: multiply;
-}
-
-[data-theme='dark'] .branch-seg > span {
 	mix-blend-mode: screen;
 }
 
@@ -607,10 +608,6 @@
 	padding: 0 0.15em;
 	text-overflow: ellipsis;
 	color: var(--font-color);
-	mix-blend-mode: multiply;
-}
-
-[data-theme='dark'] .mask-seg {
 	mix-blend-mode: screen;
 }
 

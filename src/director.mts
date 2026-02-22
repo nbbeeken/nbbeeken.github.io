@@ -1,4 +1,4 @@
-import { toast } from './utils';
+import { toast } from './utils.mjs';
 
 const reader = new NDEFReader();
 const scanBtn = document.getElementById('lock')!;

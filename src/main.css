@@ -10,7 +10,7 @@
 #post-title-nfc-cards   { view-transition-name: post-title-nfc-cards; }
 #post-title-web-socket  { view-transition-name: post-title-web-socket; }
 
-/* @font-face {
+@font-face {
 	font-family: 'SpaceMono Nerd Font';
 	src: url('./fonts/SpaceMonoRegular.woff2') format('woff2');
 	font-weight: normal;
@@ -23,26 +23,27 @@
 	font-weight: normal;
 	font-style: italic;
 	font-display: swap;
-} */
+}
 
 :root {
 	max-width: 100ch;
 	padding: 2em 1em;
 	margin: auto;
 	line-height: 1.75;
+	overflow-x: hidden;
 
 	--default-font: Verdana, Geneva, Tahoma, sans-serif;
 	--header-font: 'SpaceMono Nerd Font', monospace;
 
 	font-family: var(--default-font);
 
-	/* Variables */
-	--primary-color: #335b7f;
-	--secondary-color: #0080a0;
-	--font-color: black;
-	--body-color: white;
-	--shadow-color: rgba(0, 0, 0, 0.2);
-	--pulse-color: rgba(0, 105, 0, 0.8);
+	/* Variables — dark theme is default */
+	--primary-color: #b1d6ff;
+	--secondary-color: #00bfff;
+	--font-color: white;
+	--body-color: rgb(39, 39, 39);
+	--shadow-color: #b1d6ffb3;
+	--pulse-color: rgba(4, 168, 4, 0.8);
 }
 
 #theme-switch {
@@ -54,20 +55,20 @@
 }
 
 #theme-switch + label:after {
-	content: '🌙';
+	content: '🌞';
 }
 
 #theme-switch:checked + label:after {
-	content: '☀';
+	content: '🌙';
 }
 
-[data-theme='dark'] {
-	--primary-color: #d7f3ff;
-	--primary-color: #b1d6ff;
-	--body-color: rgb(39, 39, 39);
-	--font-color: white;
-	--shadow-color: #b1d6ffb3;
-	--pulse-color: rgba(4, 168, 4, 0.8);
+[data-theme='light'] {
+	--primary-color: #335b7f;
+	--secondary-color: #0080a0;
+	--font-color: black;
+	--body-color: white;
+	--shadow-color: rgba(0, 0, 0, 0.2);
+	--pulse-color: rgba(0, 105, 0, 0.8);
 }
 
 body {

@@ -1,4 +1,4 @@
-name: Deploy parcel bundle content to Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -39,8 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: ./dist
+          path: ./src
 
       - name: Deploy to GitHub Pages
         id: deployment

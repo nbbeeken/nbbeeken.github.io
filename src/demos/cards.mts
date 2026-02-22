@@ -1,6 +1,6 @@
 /// <reference types="./web-nfc.d.ts">
 
-import { once, promiseWithResolvers } from '../utils.js';
+import { once, promiseWithResolvers } from '../utils.mjs';
 
 const log = console.log.bind(console);
 
