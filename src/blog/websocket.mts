@@ -33,17 +33,31 @@ type MaskDir = {
 
 // RFC 6455 §5.2 — Base Framing Protocol
 const FRAME_FIELDS: readonly Field[] = [
-	{ name: 'fin',          label: 'FIN — final fragment bit',          shortLabel: 'FIN',  row: 1, startBit: 1,  endBit: 1  },
-	{ name: 'rsv',          label: 'RSV1 — reserved (compression enabled)',   shortLabel: 'R1',   row: 1, startBit: 2,  endBit: 2  },
-	{ name: 'rsv',          label: 'RSV2 — reserved (extension use)',   shortLabel: 'R2',   row: 1, startBit: 3,  endBit: 3  },
-	{ name: 'rsv',          label: 'RSV3 — reserved (extension use)',   shortLabel: 'R3',   row: 1, startBit: 4,  endBit: 4  },
-	{ name: 'opcode',       label: 'opcode (4 bits)',                                       row: 1, startBit: 5,  endBit: 8  },
-	{ name: 'mask-bit',     label: 'MASK — payload is masked',          shortLabel: 'MASK', row: 1, startBit: 9,  endBit: 9  },
-	{ name: 'payload-len',  label: 'payload len (7 bits)',               shortLabel: 'payload len', row: 1, startBit: 10, endBit: 16 },
-	{ name: 'ext-payload',  label: 'extended payload len (16 bits)',     shortLabel: 'ext payload len', row: 1, startBit: 17, endBit: 32 },
-	{ name: 'ext-payload',  label: 'extended payload len, cont. (32 bits)', shortLabel: 'ext payload len cont.', row: 2, startBit: 1, endBit: 32 },
-	{ name: 'masking-key',  label: 'masking key (32 bits)',                                 row: 3, startBit: 1,  endBit: 32 },
-	{ name: 'payload-data', label: 'payload data',                                          row: 4, startBit: 1,  endBit: 32 },
+	{ name: 'fin', label: 'FIN — final fragment bit', shortLabel: 'FIN', row: 1, startBit: 1, endBit: 1 },
+	{ name: 'rsv', label: 'RSV1 — reserved (compression enabled)', shortLabel: 'R1', row: 1, startBit: 2, endBit: 2 },
+	{ name: 'rsv', label: 'RSV2 — reserved (extension use)', shortLabel: 'R2', row: 1, startBit: 3, endBit: 3 },
+	{ name: 'rsv', label: 'RSV3 — reserved (extension use)', shortLabel: 'R3', row: 1, startBit: 4, endBit: 4 },
+	{ name: 'opcode', label: 'opcode (4 bits)', row: 1, startBit: 5, endBit: 8 },
+	{ name: 'mask-bit', label: 'MASK — payload is masked', shortLabel: 'MASK', row: 1, startBit: 9, endBit: 9 },
+	{ name: 'payload-len', label: 'payload len (7 bits)', shortLabel: 'payload len', row: 1, startBit: 10, endBit: 16 },
+	{
+		name: 'ext-payload',
+		label: 'extended payload len (16 bits)',
+		shortLabel: 'ext payload len',
+		row: 1,
+		startBit: 17,
+		endBit: 32,
+	},
+	{
+		name: 'ext-payload',
+		label: 'extended payload len, cont. (32 bits)',
+		shortLabel: 'ext payload len cont.',
+		row: 2,
+		startBit: 1,
+		endBit: 32,
+	},
+	{ name: 'masking-key', label: 'masking key (32 bits)', row: 3, startBit: 1, endBit: 32 },
+	{ name: 'payload-data', label: 'payload data', row: 4, startBit: 1, endBit: 32 },
 ];
 
 // Three payload length cases — each row sums to 16 byte-units for consistent width
@@ -52,26 +66,26 @@ const BRANCH_CASES: readonly BranchCase[] = [
 		label: 'len 0-125',
 		note: 'Length fits in 7 bits — no extended field.',
 		fields: [
-			{ name: 'masking-key',  label: 'masking key (4 B)',  bytes: 4  },
-			{ name: 'payload-data', label: 'payload data →',     bytes: 12 },
+			{ name: 'masking-key', label: 'masking key (4 B)', bytes: 4 },
+			{ name: 'payload-data', label: 'payload data →', bytes: 12 },
 		],
 	},
 	{
 		label: 'len = 126',
 		note: '2-byte unsigned integer follows.',
 		fields: [
-			{ name: 'ext-payload',  label: 'ext. len (2 B)',     bytes: 2  },
-			{ name: 'masking-key',  label: 'masking key (4 B)',  bytes: 4  },
-			{ name: 'payload-data', label: 'payload data →',     bytes: 10 },
+			{ name: 'ext-payload', label: 'ext. len (2 B)', bytes: 2 },
+			{ name: 'masking-key', label: 'masking key (4 B)', bytes: 4 },
+			{ name: 'payload-data', label: 'payload data →', bytes: 10 },
 		],
 	},
 	{
 		label: 'len = 127',
 		note: '8-byte unsigned integer follows.',
 		fields: [
-			{ name: 'ext-payload',  label: 'ext. len (8 B)',     bytes: 8  },
-			{ name: 'masking-key',  label: 'masking key (4 B)',  bytes: 4  },
-			{ name: 'payload-data', label: 'payload data →',     bytes: 4  },
+			{ name: 'ext-payload', label: 'ext. len (8 B)', bytes: 8 },
+			{ name: 'masking-key', label: 'masking key (4 B)', bytes: 4 },
+			{ name: 'payload-data', label: 'payload data →', bytes: 4 },
 		],
 	},
 ];
@@ -81,17 +95,17 @@ const MASKING_DIRECTIONS: readonly MaskDir[] = [
 		label: 'client → server',
 		note: 'MASK must be 1 — masking key is present',
 		fields: [
-			{ name: 'mask-bit',     label: 'MASK=1',             flex: 2 },
-			{ name: 'masking-key',  label: 'masking key (4 B)',  flex: 4 },
-			{ name: 'payload-data', label: 'payload',            flex: 6 },
+			{ name: 'mask-bit', label: 'MASK=1', flex: 2 },
+			{ name: 'masking-key', label: 'masking key (4 B)', flex: 4 },
+			{ name: 'payload-data', label: 'payload', flex: 6 },
 		],
 	},
 	{
 		label: 'server → client',
 		note: 'MASK must be 0 — no masking key',
 		fields: [
-			{ name: 'mask-bit-zero', label: 'MASK=0',                      flex: 2  },
-			{ name: 'payload-data',  label: 'payload (no masking key)',     flex: 10 },
+			{ name: 'mask-bit-zero', label: 'MASK=0', flex: 2 },
+			{ name: 'payload-data', label: 'payload (no masking key)', flex: 10 },
 		],
 	},
 ];

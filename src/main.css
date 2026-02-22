@@ -2,13 +2,27 @@
 	navigation: auto;
 }
 
-#post-title-async-stack { view-transition-name: post-title-async-stack; }
-#post-title-dashmips    { view-transition-name: post-title-dashmips; }
-#post-title-c-koans     { view-transition-name: post-title-c-koans; }
-#post-title-moon        { view-transition-name: post-title-moon; }
-#post-title-wolfie-ball { view-transition-name: post-title-wolfie-ball; }
-#post-title-nfc-cards   { view-transition-name: post-title-nfc-cards; }
-#post-title-web-socket  { view-transition-name: post-title-web-socket; }
+#post-title-async-stack {
+	view-transition-name: post-title-async-stack;
+}
+#post-title-dashmips {
+	view-transition-name: post-title-dashmips;
+}
+#post-title-c-koans {
+	view-transition-name: post-title-c-koans;
+}
+#post-title-moon {
+	view-transition-name: post-title-moon;
+}
+#post-title-wolfie-ball {
+	view-transition-name: post-title-wolfie-ball;
+}
+#post-title-nfc-cards {
+	view-transition-name: post-title-nfc-cards;
+}
+#post-title-web-socket {
+	view-transition-name: post-title-web-socket;
+}
 
 @font-face {
 	font-family: 'SpaceMono Nerd Font';
