@@ -136,10 +136,10 @@ sec-websocket-version = 13</code></pre>
 						irrelevant over a properly-terminating HTTP/2 connection.
 					</li>
 					<li>
-						<strong>No connection hijacking.</strong> JavaScript cannot issue a
-						<code>CONNECT</code> request through <code>XMLHttpRequest</code> or
-						<code>fetch</code>, and pseudo-headers are connection-stack-internal — a web page
-						cannot forge them to open a cross-site WebSocket tunnel.
+						<strong>Connection not dedicated.</strong> Unlike HTTP/1.1 where
+						<code>Upgrade: websocket</code> dedicates the entire connection to WebSocket, HTTP/2's
+						<code>CONNECT</code> uses a single stream. The connection remains multiplexed—other HTTP
+						requests can coexist on the same connection.
 					</li>
 				</ul>
 			</section>
