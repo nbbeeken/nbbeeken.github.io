@@ -780,12 +780,19 @@
 	.scrolly {
 		grid-template-columns: 1fr;
 		gap: 0;
-		padding: 0 1rem;
+		padding: 0;
 	}
 
 	.diagram-panel {
-		position: static;
-		padding: 1rem 0;
+		position: sticky;
+		top: 0;
+		padding: 0.5rem 0.5rem;
+		z-index: 10;
+		background: var(--body-color);
+	}
+
+	.steps-panel {
+		padding: 0 1rem;
 	}
 
 	.step {
@@ -796,7 +803,25 @@
 		grid-template-columns: 1fr;
 	}
 
+	/* Frame fills the full sticky bar width; let scroll-driven animations run */
 	.ws-frame {
-		font-size: 0.36rem;
+		font-size: 0.65rem;
+		width: 100%;
+		/* Override the appear animation — on mobile the diagram is always visible */
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Borders are always visible on mobile (no need to wait for scroll) */
+	.ws-frame [class*='field-'] {
+		border-color: var(--ws-grid-border) !important;
+	}
+
+	/* Overlays don't work in stacked layout — hide them to keep the sticky panel compact */
+	.branch-cases,
+	.masking-direction,
+	.field-info {
+		display: none;
 	}
 }
