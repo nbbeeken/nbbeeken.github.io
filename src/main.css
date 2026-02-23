@@ -23,6 +23,9 @@
 #post-title-web-socket {
 	view-transition-name: post-title-web-socket;
 }
+#post-title-streaming-web-socket {
+	view-transition-name: post-title-streaming-web-socket;
+}
 
 @font-face {
 	font-family: 'SpaceMono Nerd Font';
