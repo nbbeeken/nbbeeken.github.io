@@ -10,6 +10,9 @@
 		<script>
 			if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
 		</script>
+		<script type="module" src="./director.mjs"></script>
+		<script type="module" src="./theme.mjs"></script>
+		<script type="module" src="./time.mjs"></script>
 	</head>
 	<body>
 		<div>
@@ -21,7 +24,4 @@
 			<button id="lock">Prepare the &#128274;</button>
 		</main>
 	</body>
-	<script type="module" src="./director.mjs"></script>
-	<script type="module" src="./theme.mjs"></script>
-	<script type="module" src="./time.mjs"></script>
 </html>

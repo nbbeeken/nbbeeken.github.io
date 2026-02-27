@@ -11,6 +11,8 @@
 		<script>
 			if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
 		</script>
+		<script type="module" src="../theme.mjs"></script>
+		<script type="module" src="./websocket.mjs"></script>
 	</head>
 	<body>
 		<div>
@@ -419,8 +421,5 @@ sec-websocket-version = 13</code></pre>
 				</p>
 			</section>
 		</article>
-
-		<script type="module" src="../theme.mjs"></script>
-		<script type="module" src="./websocket.mjs"></script>
 	</body>
 </html>

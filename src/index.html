@@ -10,6 +10,8 @@
 		<script>
 			if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
 		</script>
+		<script type="module" src="./theme.mjs"></script>
+		<script type="module" src="./time.mjs"></script>
 	</head>
 	<body>
 		<div>
@@ -52,9 +54,7 @@
 					<li>
 						<div class="post-preview">
 							<h2 id="post-title-streaming-web-socket">
-								<a href="./blog/streaming_websockets.html" title="Streaming over WebSocket"
-									>Streaming over WebSockets</a
-								>
+								<a href="./blog/streaming_websockets.html" title="Streaming over WebSocket">Streaming over WebSocket</a>
 							</h2>
 							<time>February 22, 2026</time>
 							<p>An animated deep dive into streaming over the WebSocket Protocol.</p>
@@ -136,6 +136,4 @@
 			</article>
 		</main>
 	</body>
-	<script type="module" src="./theme.mjs"></script>
-	<script type="module" src="./time.mjs"></script>
 </html>
