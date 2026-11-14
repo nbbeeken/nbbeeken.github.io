@@ -25,6 +25,7 @@
 
 			<!-- ── Intro ──────────────────────────────────────────────── -->
 			<section>
+				<h2>Why do we have WebSocket?</h2>
 				<p>
 					HTTP is a request-response protocol. The client speaks, the server answers, and the connection closes. This
 					works well for fetching documents, but it is a poor fit for anything that needs the server to push data
@@ -249,33 +250,33 @@ sec-websocket-version = 13</code></pre>
 						</thead>
 						<tbody>
 							<tr>
-								<td>0x0</td>
+								<td>0x00</td>
 								<td>Continuation frame</td>
 							</tr>
 							<tr>
-								<td>0x1</td>
+								<td><code>0x01</code></td>
 								<td>Text frame (UTF-8)</td>
 							</tr>
 							<tr>
-								<td>0x2</td>
+								<td><code>0x02</code></td>
 								<td>Binary frame</td>
 							</tr>
 							<tr>
-								<td>0x8</td>
+								<td><code>0x08</code></td>
 								<td>Connection close</td>
 							</tr>
 							<tr>
-								<td>0x9</td>
+								<td><code>0x09</code></td>
 								<td>Ping</td>
 							</tr>
 							<tr>
-								<td>0xA</td>
+								<td><code>0x0A</code></td>
 								<td>Pong</td>
 							</tr>
 						</tbody>
 					</table>
 					<p>
-						Values 0x3–0x7 and 0xB–0xF are reserved for future data and control frames respectively. A receiver that
+						Values <code>0x03</code>-<code>0x07</code> and <code>0x0B</code>-<code>0x0F</code> are reserved for future data and control frames respectively. A receiver that
 						encounters an unknown opcode must close the connection.
 					</p>
 				</section>
@@ -379,20 +380,20 @@ sec-websocket-version = 13</code></pre>
 					<ul style="list-style: disc; padding-left: 1.5em">
 						<li>
 							Continuation frames (0x0) carry subsequent fragments of a fragmented message. The first fragment uses
-							opcode 0x1 or 0x2; every following fragment uses 0x0 to signal "more of the same message". The receiver
+							opcode <code>0x01</code> or <code>0x02</code>; every following fragment uses 0x0 to signal "more of the same message". The receiver
 							reassembles them in order.
 						</li>
 						<li>
-							Text frames (0x1) must carry valid UTF-8. The receiver must close the connection if it receives malformed
+							Text frames (<code>0x01</code>) must carry valid UTF-8. The receiver must close the connection if it receives malformed
 							UTF-8.
 						</li>
-						<li>Binary frames (0x2) carry arbitrary bytes — your protocol defines the structure.</li>
+						<li>Binary frames (<code>0x02</code>) carry arbitrary bytes — your protocol defines the structure.</li>
 						<li>
-							Close frames (0x8) carry an optional 2-byte (16-bit big endian) status code followed by a UTF-8 reason
+							Close frames (<code>0x08</code>) carry an optional 2-byte (16-bit big endian) status code followed by a UTF-8 reason
 							string.
 						</li>
 						<li>
-							Ping (0x9) and Pong (0xA) payloads are limited to 125 bytes and must be echoed verbatim in the
+							Ping (<code>0x09</code>) and Pong (<code>0x0A</code>) payloads are limited to 125 bytes and must be echoed verbatim in the
 							corresponding Pong.
 						</li>
 					</ul>
@@ -407,10 +408,11 @@ sec-websocket-version = 13</code></pre>
 		<!-- .scrolly -->
 
 		<article class="ws-post">
+			<h2>Closing a connection</h2>
 			<section>
-				<h2>Closing a connection</h2>
+				<h3>CLOSE Frame: <code>0x08</code></h3>
 				<p>
-					Either side can initiate a close by sending a Close frame (opcode 0x8). The other side must respond with its
+					Either side can initiate a close by sending a Close frame (opcode <code>0x08</code>). The other side must respond with its
 					own Close frame and then close the TCP connection. Status codes mirror HTTP semantics: 1000 is a normal
 					closure, 1001 means the endpoint is "going away" (a server restarting, a browser navigating), 1002 is a
 					protocol error.

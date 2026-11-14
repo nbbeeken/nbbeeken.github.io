@@ -10,8 +10,8 @@ const blogFiles = fs
 	.map((f) => path.join('src', 'blog', f));
 const htmlFiles = [path.join('src', 'index.html'), path.join('src', 'resume.html'), ...blogFiles];
 
-const commandArguments = ['-jar', `"${vnu}"`, '--format', 'json', '--stdout', '--exit-zero-always', ...htmlFiles];
-const output = child_process.execFileSync('java', commandArguments, { shell: true, stdio: ['pipe'], encoding: 'utf8' });
+const commandArguments = ['vnu', '--format', 'json', '--stdout', '--also-check-css', '--exit-zero-always', ...htmlFiles];
+const output = child_process.execFileSync('npx', commandArguments, { stdio: ['pipe'], encoding: 'utf8' });
 
 const ignore = 'Trailing slash on void elements'.toLowerCase();
 

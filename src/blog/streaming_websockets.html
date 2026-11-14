@@ -20,7 +20,7 @@
 		<article class="projects">
 			<h1 class="post-title" id="post-title-streaming-web-socket">Streaming over WebSocket</h1>
 			<section>
-				<h3>The WebSocket protocol is message based.</h3>
+				<h2>The WebSocket protocol is message based.</h2>
 				<p>
 					And that's a problem.
 					We want to stream a continuous flow of information, much like the WebSocket protocol does in our last blog post.
@@ -28,7 +28,7 @@
 					are made up of a starting text or binary message followed by continuation frames that allow the break up of large messages.
 					This is essentially what we want but for our application.
 				</p>
-				<h3>So how do we do it?</h3>
+				<h2>So how do we do it?</h2>
 				<p>
 					Write your own websocket protocol parser.
 					While somewhat of a joke this is likely necessary depending on your language and ecosystem.
@@ -37,14 +37,14 @@
 					Most frameworks are going to offer message-based API abstractions like defining an <code>onMessage</code> handler that waits
 					for all the data to arrive before firing.
 				</p>
-				<h3>Application protocol?</h3>
+				<h2>Application protocol?</h2>
 				<p>
 					Now you're application needs its own protocol for determining the bounds of data.
 					It could be deliminated with a sequence not found in the data.
 					Or it can have a leading size indicator or in general a header with information that controls parsing.
 					In both cases your websocket powered application will need to be cautious about how much it trusts the input.
 				</p>
-				<h3>Okay, what about the browser?</h3>
+				<h2>Okay, what about the browser?</h2>
 				<p>
 					Right, so the browser's not going to give us anything more than WebSocket anytime soon.
 					The new cool thing is <code>WebTransport</code> and deserves more attention, there's work to make that <a href="https://datatracker.ietf.org/doc/draft-ietf-webtrans-http2/">available over http/2</a>
