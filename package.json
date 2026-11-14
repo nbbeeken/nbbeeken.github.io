@@ -9,13 +9,16 @@
 		"watch": "tsc --watch",
 		"start": "node scripts/serve.mts",
 		"fmt": "prettier --write .",
-		"lint": "node ./scripts/lint_html.mjs"
+		"lint": "node ./scripts/lint_html.mts"
 	},
 	"devDependencies": {
-		"@types/node": "^25.3.0",
+		"@types/node": "^26.6.6",
 		"@types/vnu-jar": "^17.11.2",
-		"prettier": "^3.8.1",
-		"typescript": "^5.9.3",
-		"vnu-jar": "^26.2.20"
+		"prettier": "^3.10.1",
+		"typescript": "^7.0.2",
+		"vnu-jar": "^26.11.9"
+	},
+	"allowScripts": {
+		"vnu-jar@26.11.9": true
 	}
 }

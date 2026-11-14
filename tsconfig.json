@@ -6,6 +6,7 @@
 		"moduleResolution": "Bundler",
 		"erasableSyntaxOnly": true,
 		"sourceMap": true,
+		"types": ["node"],
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"noEmit": false
 	},
