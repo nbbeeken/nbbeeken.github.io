@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(fileURLToPath(import.meta.url), '../../src');
 const PORT = process.env.PORT ?? 8080;
 
-const MIME = {
+const MIME: Record<string, string> = {
 	'.html': 'text/html; charset=utf-8',
 	'.css': 'text/css; charset=utf-8',
 	'.mjs': 'text/javascript; charset=utf-8',
@@ -22,7 +22,7 @@ const MIME = {
 };
 
 const server = createServer(async (req, res) => {
-	let pathname = new URL(req.url, 'http://localhost').pathname;
+	let pathname = new URL(req.url ?? '', 'http://localhost').pathname;
 	if (pathname.endsWith('/')) pathname += 'index.html';
 
 	const filePath = join(ROOT, pathname);
